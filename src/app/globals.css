@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-ink: #0b1f17;
+  --color-moss: #1b4332;
+  --color-fern: #2d6a4f;
+  --color-blaze: #e85d04;
+  --color-mist: #f0f4f1;
+  --color-snow: #ffffff;
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background: var(--color-mist);
+  color: var(--color-ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), Impact, sans-serif;
+}
+
+.topo-bg {
+  background-color: #0b1f17;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 10%, #2d6a4f55, transparent),
+    radial-gradient(ellipse 60% 40% at 90% 80%, #e85d0422, transparent),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30c10-8 20-8 30 0s20 8 30 0' fill='none' stroke='%232D6A4F' stroke-opacity='0.25' stroke-width='1'/%3E%3C/svg%3E");
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-rise {
+  animation: rise 0.6s ease-out both;
+}
+
+.animate-rise-delay {
+  animation: rise 0.7s ease-out 0.12s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .animate-rise-delay {
+    animation: none;
+  }
+}
