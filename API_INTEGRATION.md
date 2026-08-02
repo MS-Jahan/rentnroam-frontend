@@ -1,74 +1,64 @@
-# API Integration Map
+# API Integration
 
-**Backend:** https://gearup-api.vercel.app  
-**OpenAPI:** https://gearup-api.vercel.app/api/docs
+Backend: https://gearup-api.vercel.app  
+Swagger: https://gearup-api.vercel.app/api/docs
+
+Auth goes through Next.js route handlers under `/api/auth/*`. Those set an httpOnly `gearup_token` cookie. Authenticated browser calls go through `/api/proxy`, which attaches the Bearer token.
 
 ## Auth
 
-| Frontend | Backend | Notes |
-|----------|---------|-------|
-| `POST /api/auth/login` (BFF) | `POST /api/auth/login` | Sets httpOnly `gearup_token` + `gearup_role` |
-| `POST /api/auth/register` (BFF) | `POST /api/auth/register` | Role: CUSTOMER \| PROVIDER |
-| `POST /api/auth/logout` (BFF) | — | Clears cookies |
-| `GET /api/auth/me` (BFF) | `GET /api/auth/me` | Session hydrate |
-| `POST /api/proxy` (BFF) | Any authenticated `/api/*` | Attaches Bearer token from cookie |
+| Frontend | Backend |
+|----------|---------|
+| `POST /api/auth/login` | `POST /api/auth/login` |
+| `POST /api/auth/register` | `POST /api/auth/register` |
+| `POST /api/auth/logout` | clears cookies locally |
+| `GET /api/auth/me` | `GET /api/auth/me` |
+| `POST /api/proxy` | forwards to any `/api/*` with the cookie token |
 
 ## Public
 
-| Component / Route | Endpoint |
-|-------------------|----------|
+| Screen | Endpoint |
+|--------|----------|
 | Home featured gear | `GET /api/gear?available=true&limit=6` |
-| `/gear` browse + filters | `GET /api/gear`, `GET /api/categories` |
-| `/gear/[id]` | `GET /api/gear/:id` |
+| Browse + filters | `GET /api/gear`, `GET /api/categories` |
+| Gear detail | `GET /api/gear/:id` |
 
 ## Customer
 
-| Component / Route | Endpoint |
-|-------------------|----------|
-| Rent CTA on detail | `POST /api/rentals` |
-| Dashboard orders | `GET /api/rentals` |
+| Screen | Endpoint |
+|--------|----------|
+| Rent from detail page | `POST /api/rentals` |
+| Orders list | `GET /api/rentals` |
 | Cancel order | `PATCH /api/rentals/:id/cancel` |
 | Payment history | `GET /api/payments` |
-| Pay page | `POST /api/payments/create` → redirect `url` |
-| Success confirm | `POST /api/payments/confirm` |
+| Pay page | `POST /api/payments/create` → open returned `url` |
+| Payment success | `POST /api/payments/confirm` (with `sessionId`) |
 | Leave review | `POST /api/reviews` |
 
 ## Provider
 
-| Component / Route | Endpoint |
-|-------------------|----------|
-| Inventory list | **Workaround:** `GET /api/gear` filtered by `providerId` (missing `GET /api/provider/gear`) |
+| Screen | Endpoint |
+|--------|----------|
+| Inventory | `GET /api/provider/gear` |
 | Add gear | `POST /api/provider/gear` |
 | Edit gear | `PUT /api/provider/gear/:id` |
 | Delete gear | `DELETE /api/provider/gear/:id` |
-| Orders table | `GET /api/provider/orders` |
-| Status actions | `PATCH /api/provider/orders/:id` |
+| Orders | `GET /api/provider/orders` |
+| Update status | `PATCH /api/provider/orders/:id` |
 
 ## Admin
 
-| Component / Route | Endpoint |
-|-------------------|----------|
+| Screen | Endpoint |
+|--------|----------|
 | Users | `GET /api/admin/users`, `PATCH /api/admin/users/:id` |
 | Gear moderation | `GET /api/admin/gear` |
 | Rentals moderation | `GET /api/admin/rentals` |
-| Stats | Derived from `meta.total` (no `/api/admin/stats`) |
+| Dashboard counts | `meta.total` from the list endpoints above |
 
-## Backend issues
-
-See [docs/CONFUSIONS.md](./docs/CONFUSIONS.md).
-
-### Critical gaps found
-
-1. **`GET /api/provider/gear` → 404** on live API. Provider inventory uses public gear list filtered by provider id.
-2. **Stripe `return_url`** points to API HTML (`/api/payments/success`), not frontend `/payment/success`. Frontend success page still exists and can confirm via `session_id` when reachable.
-3. **No admin aggregate stats endpoint** — totals from list pagination meta.
-
-## Test credentials
+## Demo logins
 
 | Role | Email | Password |
 |------|-------|----------|
 | Admin | admin@gearup.com | Admin@12345 |
 | Provider | provider@gearup.com | Provider@123 |
 | Customer | customer@gearup.com | Customer@123 |
-
-Stripe test card: `4242 4242 4242 4242`

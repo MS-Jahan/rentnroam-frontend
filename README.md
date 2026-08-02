@@ -1,13 +1,13 @@
 # GearUp Frontend
 
-Next.js frontend for **GearUp** — rent sports & outdoor gear.
+Next.js app for renting sports and outdoor gear. Talks to the GearUp API for auth, listings, rentals, and Stripe payments.
 
 ## Stack
 
-- Next.js 15 (App Router) + TypeScript + Tailwind CSS
-- TanStack Query + Zustand
-- JWT auth via httpOnly cookies + middleware
-- Stripe Checkout (via GearUp API payment URL)
+- Next.js 15 (App Router) + TypeScript + Tailwind
+- TanStack Query for server state, Zustand for the logged-in user
+- JWT in httpOnly cookies, with middleware on dashboard routes
+- Stripe Checkout via the API payment URL
 
 ## Setup
 
@@ -17,13 +17,14 @@ npm install
 npm run dev
 ```
 
-App: http://localhost:3000  
-API: https://gearup-api.vercel.app
+- App: http://localhost:3000
+- API: https://gearup-api.vercel.app
 
-## Docs
+Set `NEXT_PUBLIC_API_URL` in `.env.local` if you point at a different backend.
 
-- [API_INTEGRATION.md](./API_INTEGRATION.md)
-- [docs/CONFUSIONS.md](./docs/CONFUSIONS.md)
+## Useful files
+
+- [API_INTEGRATION.md](./API_INTEGRATION.md) — which screens call which endpoints
 
 ## Demo accounts
 
@@ -32,3 +33,5 @@ API: https://gearup-api.vercel.app
 | Admin | admin@gearup.com | Admin@12345 |
 | Provider | provider@gearup.com | Provider@123 |
 | Customer | customer@gearup.com | Customer@123 |
+
+Stripe test card: `4242 4242 4242 4242` (any future expiry / CVC)
