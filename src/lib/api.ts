@@ -56,7 +56,6 @@ export async function apiRequest<T>(
   return json.data;
 }
 
-/** Browser helper that uses Next BFF cookie session when no token passed. */
 export async function apiClient<T>(
   path: string,
   options: Omit<RequestOptions, "token"> & { auth?: boolean } = {}

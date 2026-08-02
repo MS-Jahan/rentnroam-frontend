@@ -17,16 +17,16 @@ export function AuthHydrator() {
         if (!cancelled && json.success) {
           setUser(json.data as User);
         } else if (!cancelled && !json.success && user) {
-          // cookie expired
           setUser(null);
         }
       } catch {
-        /* ignore */
+        // session check failed; keep whatever we have locally
       }
     })();
     return () => {
       cancelled = true;
     };
+    // only on mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

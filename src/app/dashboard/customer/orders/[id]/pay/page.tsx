@@ -27,7 +27,6 @@ export default function PayOrderPage() {
         body: { rentalOrderId: id },
       }),
     onSuccess: (data) => {
-      // Store session for success page confirmation fallback
       sessionStorage.setItem("gearup_last_session", data.sessionId);
       window.location.href = data.url;
     },
@@ -75,9 +74,8 @@ export default function PayOrderPage() {
           <span>{formatMoney(o.totalAmount)}</span>
         </div>
         <p className="text-xs text-ink/50">
-          You will be redirected to Stripe Checkout (test card 4242…). After
-          payment, return to your dashboard. See docs/CONFUSIONS.md for API
-          return URL notes.
+          You will open Stripe Checkout next. Use test card 4242 4242 4242 4242
+          with any future expiry and CVC.
         </p>
         <Button
           className="w-full"
