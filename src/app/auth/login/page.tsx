@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { FieldError, Input, Label } from "@/components/ui/field";
 import { useAuthStore } from "@/store/auth";
 import type { AuthPayload } from "@/lib/types";
-import { dashboardPath } from "@/lib/utils";
+import { dashboardPath, formatApiErrorMessage } from "@/lib/utils";
 
 function LoginForm() {
   const router = useRouter();
@@ -31,7 +31,9 @@ function LoginForm() {
       });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        throw new Error(json.message || "Login failed");
+        throw new Error(
+          formatApiErrorMessage(json.message, json.errorDetails, "Login failed")
+        );
       }
       const data = json.data as AuthPayload;
       setUser(data.user);

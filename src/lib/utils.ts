@@ -52,3 +52,23 @@ export function dashboardPath(role: string) {
   if (role === "PROVIDER") return "/dashboard/provider";
   return "/dashboard/customer";
 }
+
+export function formatApiErrorMessage(
+  message?: string | null,
+  details?: unknown,
+  fallback = "Request failed"
+) {
+  if (Array.isArray(details) && details.length > 0) {
+    const parts = details
+      .map((d) => {
+        if (!d || typeof d !== "object") return null;
+        const item = d as { message?: string; path?: (string | number)[] };
+        if (!item.message) return null;
+        const field = item.path?.length ? `${item.path.join(".")}: ` : "";
+        return `${field}${item.message}`;
+      })
+      .filter(Boolean);
+    if (parts.length) return parts.join(" · ");
+  }
+  return message || fallback;
+}
