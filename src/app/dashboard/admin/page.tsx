@@ -10,34 +10,46 @@ import { formatMoney } from "@/lib/utils";
 import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
 import { Input, Select } from "@/components/ui/field";
+import { Pagination } from "@/components/pagination";
+
+const PAGE_SIZE = 10;
 
 export default function AdminDashboardPage() {
   const qc = useQueryClient();
   const [role, setRole] = useState("");
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"users" | "gear" | "rentals">("users");
+  const [usersPage, setUsersPage] = useState(1);
+  const [gearPage, setGearPage] = useState(1);
+  const [rentalsPage, setRentalsPage] = useState(1);
 
   const users = useQuery({
-    queryKey: ["admin-users", role],
+    queryKey: ["admin-users", role, usersPage],
     queryFn: () =>
       apiClient<Paginated<User>>(
-        `/api/admin/users?limit=50${role ? `&role=${role}` : ""}`,
+        `/api/admin/users?page=${usersPage}&limit=${PAGE_SIZE}${
+          role ? `&role=${role}` : ""
+        }`,
         { auth: true }
       ),
   });
 
   const gear = useQuery({
-    queryKey: ["admin-gear"],
+    queryKey: ["admin-gear", gearPage],
     queryFn: () =>
-      apiClient<Paginated<GearItem>>("/api/admin/gear?limit=50", { auth: true }),
+      apiClient<Paginated<GearItem>>(
+        `/api/admin/gear?page=${gearPage}&limit=${PAGE_SIZE}`,
+        { auth: true }
+      ),
   });
 
   const rentals = useQuery({
-    queryKey: ["admin-rentals"],
+    queryKey: ["admin-rentals", rentalsPage],
     queryFn: () =>
-      apiClient<Paginated<RentalOrder>>("/api/admin/rentals?limit=50", {
-        auth: true,
-      }),
+      apiClient<Paginated<RentalOrder>>(
+        `/api/admin/rentals?page=${rentalsPage}&limit=${PAGE_SIZE}`,
+        { auth: true }
+      ),
   });
 
   const toggleUser = useMutation({
@@ -97,7 +109,10 @@ export default function AdminDashboardPage() {
             />
             <Select
               value={role}
-              onChange={(e) => setRole(e.target.value)}
+              onChange={(e) => {
+                setRole(e.target.value);
+                setUsersPage(1);
+              }}
               className="max-w-[180px]"
             >
               <option value="">All roles</option>
@@ -109,50 +124,61 @@ export default function AdminDashboardPage() {
           {users.isLoading ? (
             <p className="text-ink/50">Loading…</p>
           ) : (
-            <div className="overflow-x-auto rounded-xl border border-moss/10 bg-snow">
-              <table className="min-w-full text-left text-sm">
-                <thead className="border-b border-moss/10 bg-mist/60 text-xs uppercase text-ink/50">
-                  <tr>
-                    <th className="px-4 py-3">User</th>
-                    <th className="px-4 py-3">Role</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.map((u) => (
-                    <tr key={u.id} className="border-b border-moss/5">
-                      <td className="px-4 py-3">
-                        <p className="font-medium">{u.name}</p>
-                        <p className="text-xs text-ink/50">{u.email}</p>
-                      </td>
-                      <td className="px-4 py-3">{u.role}</td>
-                      <td className="px-4 py-3">
-                        <StatusBadge status={u.status} />
-                      </td>
-                      <td className="px-4 py-3">
-                        {u.role !== "ADMIN" && (
-                          <Button
-                            variant={u.status === "ACTIVE" ? "danger" : "secondary"}
-                            className="!px-2 !py-1 text-xs"
-                            loading={toggleUser.isPending}
-                            onClick={() =>
-                              toggleUser.mutate({
-                                id: u.id,
-                                status:
-                                  u.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE",
-                              })
-                            }
-                          >
-                            {u.status === "ACTIVE" ? "Suspend" : "Activate"}
-                          </Button>
-                        )}
-                      </td>
+            <>
+              <div className="overflow-x-auto rounded-xl border border-line bg-snow">
+                <table className="min-w-full text-left text-sm">
+                  <thead className="border-b border-line bg-mist/60 text-xs uppercase text-ink/50">
+                    <tr>
+                      <th className="px-4 py-3">User</th>
+                      <th className="px-4 py-3">Role</th>
+                      <th className="px-4 py-3">Status</th>
+                      <th className="px-4 py-3">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {filteredUsers.map((u) => (
+                      <tr key={u.id} className="border-b border-line/60">
+                        <td className="px-4 py-3">
+                          <p className="font-medium">{u.name}</p>
+                          <p className="text-xs text-ink/50">{u.email}</p>
+                        </td>
+                        <td className="px-4 py-3">{u.role}</td>
+                        <td className="px-4 py-3">
+                          <StatusBadge status={u.status} />
+                        </td>
+                        <td className="px-4 py-3">
+                          {u.role !== "ADMIN" && (
+                            <Button
+                              variant={
+                                u.status === "ACTIVE" ? "danger" : "secondary"
+                              }
+                              className="!px-2 !py-1 text-xs"
+                              loading={toggleUser.isPending}
+                              onClick={() =>
+                                toggleUser.mutate({
+                                  id: u.id,
+                                  status:
+                                    u.status === "ACTIVE"
+                                      ? "SUSPENDED"
+                                      : "ACTIVE",
+                                })
+                              }
+                            >
+                              {u.status === "ACTIVE" ? "Suspend" : "Activate"}
+                            </Button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <Pagination
+                meta={users.data?.meta}
+                page={usersPage}
+                onPageChange={setUsersPage}
+              />
+            </>
           )}
         </section>
       )}
@@ -162,34 +188,46 @@ export default function AdminDashboardPage() {
           {gear.isLoading ? (
             <p className="text-ink/50">Loading…</p>
           ) : (
-            <div className="overflow-x-auto rounded-xl border border-moss/10 bg-snow">
-              <table className="min-w-full text-left text-sm">
-                <thead className="border-b border-moss/10 bg-mist/60 text-xs uppercase text-ink/50">
-                  <tr>
-                    <th className="px-4 py-3">Gear</th>
-                    <th className="px-4 py-3">Provider</th>
-                    <th className="px-4 py-3">Price</th>
-                    <th className="px-4 py-3">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {gear.data?.items.map((g) => (
-                    <tr key={g.id} className="border-b border-moss/5">
-                      <td className="px-4 py-3">
-                        <Link href={`/gear/${g.id}`} className="font-medium text-fern">
-                          {g.name}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3">{g.provider?.name}</td>
-                      <td className="px-4 py-3">{formatMoney(g.pricePerDay)}</td>
-                      <td className="px-4 py-3">
-                        <StatusBadge status={g.status} />
-                      </td>
+            <>
+              <div className="overflow-x-auto rounded-xl border border-line bg-snow">
+                <table className="min-w-full text-left text-sm">
+                  <thead className="border-b border-line bg-mist/60 text-xs uppercase text-ink/50">
+                    <tr>
+                      <th className="px-4 py-3">Gear</th>
+                      <th className="px-4 py-3">Provider</th>
+                      <th className="px-4 py-3">Price</th>
+                      <th className="px-4 py-3">Status</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {gear.data?.items.map((g) => (
+                      <tr key={g.id} className="border-b border-line/60">
+                        <td className="px-4 py-3">
+                          <Link
+                            href={`/gear/${g.id}`}
+                            className="font-medium text-fern"
+                          >
+                            {g.name}
+                          </Link>
+                        </td>
+                        <td className="px-4 py-3">{g.provider?.name}</td>
+                        <td className="px-4 py-3">
+                          {formatMoney(g.pricePerDay)}
+                        </td>
+                        <td className="px-4 py-3">
+                          <StatusBadge status={g.status} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <Pagination
+                meta={gear.data?.meta}
+                page={gearPage}
+                onPageChange={setGearPage}
+              />
+            </>
           )}
         </section>
       )}
@@ -199,30 +237,39 @@ export default function AdminDashboardPage() {
           {rentals.isLoading ? (
             <p className="text-ink/50">Loading…</p>
           ) : (
-            <div className="overflow-x-auto rounded-xl border border-moss/10 bg-snow">
-              <table className="min-w-full text-left text-sm">
-                <thead className="border-b border-moss/10 bg-mist/60 text-xs uppercase text-ink/50">
-                  <tr>
-                    <th className="px-4 py-3">Customer</th>
-                    <th className="px-4 py-3">Provider</th>
-                    <th className="px-4 py-3">Total</th>
-                    <th className="px-4 py-3">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rentals.data?.items.map((r) => (
-                    <tr key={r.id} className="border-b border-moss/5">
-                      <td className="px-4 py-3">{r.customer?.name}</td>
-                      <td className="px-4 py-3">{r.provider?.name}</td>
-                      <td className="px-4 py-3">{formatMoney(r.totalAmount)}</td>
-                      <td className="px-4 py-3">
-                        <StatusBadge status={r.status} />
-                      </td>
+            <>
+              <div className="overflow-x-auto rounded-xl border border-line bg-snow">
+                <table className="min-w-full text-left text-sm">
+                  <thead className="border-b border-line bg-mist/60 text-xs uppercase text-ink/50">
+                    <tr>
+                      <th className="px-4 py-3">Customer</th>
+                      <th className="px-4 py-3">Provider</th>
+                      <th className="px-4 py-3">Total</th>
+                      <th className="px-4 py-3">Status</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {rentals.data?.items.map((r) => (
+                      <tr key={r.id} className="border-b border-line/60">
+                        <td className="px-4 py-3">{r.customer?.name}</td>
+                        <td className="px-4 py-3">{r.provider?.name}</td>
+                        <td className="px-4 py-3">
+                          {formatMoney(r.totalAmount)}
+                        </td>
+                        <td className="px-4 py-3">
+                          <StatusBadge status={r.status} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <Pagination
+                meta={rentals.data?.meta}
+                page={rentalsPage}
+                onPageChange={setRentalsPage}
+              />
+            </>
           )}
         </section>
       )}
@@ -232,8 +279,10 @@ export default function AdminDashboardPage() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-moss/10 bg-snow p-4">
-      <p className="text-xs font-semibold uppercase tracking-wider text-ink/50">{label}</p>
+    <div className="rounded-xl border border-line bg-snow p-4">
+      <p className="text-xs font-semibold uppercase tracking-wider text-ink/50">
+        {label}
+      </p>
       <p className="mt-2 font-display text-3xl text-ink">{value}</p>
     </div>
   );

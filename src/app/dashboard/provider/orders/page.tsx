@@ -1,12 +1,16 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api";
 import type { Paginated, RentalOrder, RentalStatus } from "@/lib/types";
 import { formatMoney } from "@/lib/utils";
 import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
+import { Pagination } from "@/components/pagination";
+
+const PAGE_SIZE = 10;
 
 const NEXT_ACTIONS: Partial<
   Record<RentalStatus, { label: string; status: RentalStatus }[]>
@@ -22,13 +26,15 @@ const NEXT_ACTIONS: Partial<
 
 export default function ProviderOrdersPage() {
   const qc = useQueryClient();
+  const [page, setPage] = useState(1);
 
   const orders = useQuery({
-    queryKey: ["provider-orders"],
+    queryKey: ["provider-orders", page],
     queryFn: () =>
-      apiClient<Paginated<RentalOrder>>("/api/provider/orders?limit=30", {
-        auth: true,
-      }),
+      apiClient<Paginated<RentalOrder>>(
+        `/api/provider/orders?page=${page}&limit=${PAGE_SIZE}`,
+        { auth: true }
+      ),
   });
 
   const update = useMutation({
@@ -53,57 +59,68 @@ export default function ProviderOrdersPage() {
       {orders.isLoading ? (
         <p className="mt-8 text-ink/50">Loading…</p>
       ) : orders.isError ? (
-        <p className="mt-8 text-red-600">{(orders.error as Error).message}</p>
+        <p className="mt-8 text-red-600 dark:text-red-400">
+          {(orders.error as Error).message}
+        </p>
       ) : !orders.data?.items.length ? (
         <p className="mt-8 text-ink/60">No orders yet.</p>
       ) : (
-        <div className="mt-6 overflow-x-auto rounded-xl border border-moss/10 bg-snow">
-          <table className="min-w-full text-left text-sm">
-            <thead className="border-b border-moss/10 bg-mist/60 text-xs uppercase text-ink/50">
-              <tr>
-                <th className="px-4 py-3">Customer</th>
-                <th className="px-4 py-3">Gear</th>
-                <th className="px-4 py-3">Total</th>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.data.items.map((o) => (
-                <tr key={o.id} className="border-b border-moss/5">
-                  <td className="px-4 py-3">
-                    <p className="font-medium">{o.customer?.name}</p>
-                    <p className="text-xs text-ink/50">{o.customer?.email}</p>
-                  </td>
-                  <td className="px-4 py-3">
-                    {o.items?.map((i) => i.gearItem?.name).join(", ")}
-                  </td>
-                  <td className="px-4 py-3">{formatMoney(o.totalAmount)}</td>
-                  <td className="px-4 py-3">
-                    <StatusBadge status={o.status} />
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex flex-wrap gap-2">
-                      {(NEXT_ACTIONS[o.status] || []).map((a) => (
-                        <Button
-                          key={a.status}
-                          variant={a.status === "CANCELLED" ? "danger" : "secondary"}
-                          className="!px-2 !py-1 text-xs"
-                          loading={update.isPending}
-                          onClick={() =>
-                            update.mutate({ id: o.id, status: a.status })
-                          }
-                        >
-                          {a.label}
-                        </Button>
-                      ))}
-                    </div>
-                  </td>
+        <>
+          <div className="mt-6 overflow-x-auto rounded-xl border border-line bg-snow">
+            <table className="min-w-full text-left text-sm">
+              <thead className="border-b border-line bg-mist/60 text-xs uppercase text-ink/50">
+                <tr>
+                  <th className="px-4 py-3">Customer</th>
+                  <th className="px-4 py-3">Gear</th>
+                  <th className="px-4 py-3">Total</th>
+                  <th className="px-4 py-3">Status</th>
+                  <th className="px-4 py-3">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {orders.data.items.map((o) => (
+                  <tr key={o.id} className="border-b border-line/60">
+                    <td className="px-4 py-3">
+                      <p className="font-medium">{o.customer?.name}</p>
+                      <p className="text-xs text-ink/50">{o.customer?.email}</p>
+                    </td>
+                    <td className="px-4 py-3">
+                      {o.items?.map((i) => i.gearItem?.name).join(", ")}
+                    </td>
+                    <td className="px-4 py-3">{formatMoney(o.totalAmount)}</td>
+                    <td className="px-4 py-3">
+                      <StatusBadge status={o.status} />
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex flex-wrap gap-2">
+                        {(NEXT_ACTIONS[o.status] || []).map((a) => (
+                          <Button
+                            key={a.status}
+                            variant={
+                              a.status === "CANCELLED" ? "danger" : "secondary"
+                            }
+                            className="!px-2 !py-1 text-xs"
+                            loading={update.isPending}
+                            onClick={() =>
+                              update.mutate({ id: o.id, status: a.status })
+                            }
+                          >
+                            {a.label}
+                          </Button>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            meta={orders.data.meta}
+            page={page}
+            onPageChange={setPage}
+          />
+        </>
       )}
     </div>
   );

@@ -40,9 +40,10 @@ Auth goes through Next.js route handlers under `/api/auth/*`. Those set an httpO
 | Screen | Endpoint |
 |--------|----------|
 | Inventory | `GET /api/provider/gear` |
+| Toggle availability | `PUT /api/provider/gear/:id` (`status`) |
 | Add gear | `POST /api/provider/gear` |
 | Edit gear | `PUT /api/provider/gear/:id` |
-| Delete gear | `DELETE /api/provider/gear/:id` |
+| Delete gear | `DELETE /api/provider/gear/:id` (blocked if rental/review history exists) |
 | Orders | `GET /api/provider/orders` |
 | Update status | `PATCH /api/provider/orders/:id` |
 
