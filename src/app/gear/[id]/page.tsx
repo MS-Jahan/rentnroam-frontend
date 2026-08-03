@@ -23,6 +23,7 @@ export default function GearDetailPage() {
   const [endDate, setEndDate] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [formError, setFormError] = useState("");
+  const [activeImage, setActiveImage] = useState(0);
 
   const gearQuery = useQuery({
     queryKey: ["gear", id],
@@ -102,19 +103,39 @@ export default function GearDetailPage() {
   }
 
   const gear = gearQuery.data;
-  const img = gear.images?.[0];
+  const images = gear.images?.filter(Boolean) ?? [];
+  const img = images[Math.min(activeImage, Math.max(images.length - 1, 0))] || images[0];
   const category =
     gear.category && "name" in gear.category ? gear.category.name : "Gear";
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <div className="grid gap-10 lg:grid-cols-2">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-moss/10">
-          {img ? (
-            <Image src={img} alt={gear.name} fill className="object-cover" sizes="50vw" />
-          ) : (
-            <div className="flex h-full items-center justify-center topo-bg text-white">
-              <span className="font-display text-6xl uppercase">{gear.brand}</span>
+        <div>
+          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-moss/10">
+            {img ? (
+              <Image src={img} alt={gear.name} fill className="object-cover" sizes="50vw" />
+            ) : (
+              <div className="flex h-full items-center justify-center topo-bg text-white">
+                <span className="font-display text-6xl uppercase">{gear.brand}</span>
+              </div>
+            )}
+          </div>
+          {images.length > 1 && (
+            <div className="mt-3 flex gap-2 overflow-x-auto">
+              {images.map((src, i) => (
+                <button
+                  key={`${src}-${i}`}
+                  type="button"
+                  onClick={() => setActiveImage(i)}
+                  className={cn(
+                    "relative h-16 w-20 shrink-0 overflow-hidden rounded-lg border-2",
+                    i === activeImage ? "border-fern" : "border-transparent"
+                  )}
+                >
+                  <Image src={src} alt="" fill className="object-cover" sizes="80px" />
+                </button>
+              ))}
             </div>
           )}
         </div>

@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { apiRequest } from "@/lib/api";
 import type { Category, GearItem, Paginated } from "@/lib/types";
 import { GearCard, GearCardSkeleton } from "@/components/gear-card";
+import { Pagination } from "@/components/pagination";
 import { Input, Select, Label } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import { Suspense } from "react";
@@ -149,25 +150,12 @@ function GearBrowseInner() {
                   <GearCard key={g.id} gear={g} />
                 ))}
               </div>
-              <div className="mt-8 flex items-center justify-center gap-3">
-                <Button
-                  variant="ghost"
-                  disabled={page <= 1}
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
-                >
-                  Previous
-                </Button>
-                <span className="text-sm text-ink/60">
-                  Page {gear.data.meta.page} of {gear.data.meta.totalPages}
-                </span>
-                <Button
-                  variant="ghost"
-                  disabled={page >= gear.data.meta.totalPages}
-                  onClick={() => setPage((p) => p + 1)}
-                >
-                  Next
-                </Button>
-              </div>
+              <Pagination
+                meta={gear.data.meta}
+                page={page}
+                onPageChange={setPage}
+                className="mt-8"
+              />
             </>
           )}
         </div>
