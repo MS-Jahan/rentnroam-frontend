@@ -1,12 +1,50 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --ink: #0b1f17;
+  --moss: #1b4332;
+  --fern: #2d6a4f;
+  --blaze: #e85d04;
+  --mist: #f0f4f1;
+  --snow: #ffffff;
+  --panel: #ffffff;
+  --muted: #5c6b63;
+  --line: rgba(27, 67, 50, 0.12);
+  --hero: #0b1f17;
+  --footer: #0b1f17;
+  --footer-text: #f0f4f1;
+}
+
+.dark {
+  --ink: #e8f0eb;
+  --moss: #3d7a5c;
+  --fern: #5a9a74;
+  --blaze: #ff7a2f;
+  --mist: #0d1511;
+  --snow: #15201a;
+  --panel: #15201a;
+  --muted: #9aaba1;
+  --line: rgba(232, 240, 235, 0.12);
+  --hero: #07110c;
+  --footer: #060c09;
+  --footer-text: #d7e4db;
+}
+
 @theme inline {
-  --color-ink: #0b1f17;
-  --color-moss: #1b4332;
-  --color-fern: #2d6a4f;
-  --color-blaze: #e85d04;
-  --color-mist: #f0f4f1;
-  --color-snow: #ffffff;
+  --color-ink: var(--ink);
+  --color-moss: var(--moss);
+  --color-fern: var(--fern);
+  --color-blaze: var(--blaze);
+  --color-mist: var(--mist);
+  --color-snow: var(--snow);
+  --color-panel: var(--panel);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-hero: var(--hero);
+  --color-footer: var(--footer);
+  --color-footer-text: var(--footer-text);
   --font-display: var(--font-display);
   --font-sans: var(--font-body);
 }
@@ -17,9 +55,10 @@ body {
 }
 
 body {
-  background: var(--color-mist);
-  color: var(--color-ink);
+  background: var(--mist);
+  color: var(--ink);
   font-family: var(--font-body), system-ui, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .font-display {
@@ -27,7 +66,7 @@ body {
 }
 
 .topo-bg {
-  background-color: #0b1f17;
+  background-color: var(--hero);
   background-image:
     radial-gradient(ellipse 80% 50% at 20% 10%, #2d6a4f55, transparent),
     radial-gradient(ellipse 60% 40% at 90% 80%, #e85d0422, transparent),
@@ -57,5 +96,9 @@ body {
   .animate-rise,
   .animate-rise-delay {
     animation: none;
+  }
+
+  body {
+    transition: none;
   }
 }

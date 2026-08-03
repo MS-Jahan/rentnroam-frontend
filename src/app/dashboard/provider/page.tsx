@@ -38,7 +38,7 @@ export default function ProviderDashboardPage() {
         auth: true,
         method: "DELETE",
       }),
-    onSuccess: (data, _id, context) => {
+    onSuccess: (data) => {
       const markedUnavailable =
         data && typeof data === "object" && "status" in data && data.status === "UNAVAILABLE";
       toast.success(
@@ -64,7 +64,7 @@ export default function ProviderDashboardPage() {
           </h1>
           <p className="mt-1 text-ink/60">
             Manage inventory and fulfill rental orders
-            {user ? ` — ${user.name}` : ""}.
+            {user ? ` - ${user.name}` : ""}.
           </p>
         </div>
         <div className="flex gap-2">
@@ -79,8 +79,8 @@ export default function ProviderDashboardPage() {
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <Stat label="Gear listed" value={String(inventory.data?.meta.total ?? myGear.length)} />
-        <Stat label="Active / pending orders" value={String(pending ?? "—")} />
-        <Stat label="Total orders" value={String(orders.data?.meta.total ?? "—")} />
+        <Stat label="Active / pending orders" value={String(pending ?? "-")} />
+        <Stat label="Total orders" value={String(orders.data?.meta.total ?? "-")} />
       </div>
 
       <section className="mt-8">

@@ -7,6 +7,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/auth";
 import { cn, dashboardPath } from "@/lib/utils";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const publicLinks = [
   { href: "/gear", label: "Browse Gear" },
@@ -28,13 +29,13 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-moss/10 bg-mist/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-line bg-mist/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="font-display text-2xl uppercase tracking-wide text-ink">
           Gear<span className="text-blaze">Up</span>
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-4 md:flex">
           {publicLinks.map((l) => (
             <Link
               key={l.href}
@@ -55,6 +56,7 @@ export function Navbar() {
               >
                 Dashboard
               </Link>
+              <ThemeToggle />
               <button
                 type="button"
                 onClick={logout}
@@ -68,6 +70,7 @@ export function Navbar() {
               <Link href="/auth/login" className="text-sm font-medium text-ink/70 hover:text-ink">
                 Sign in
               </Link>
+              <ThemeToggle />
               <Link
                 href="/auth/register"
                 className="rounded-md bg-blaze px-3 py-1.5 text-sm font-semibold text-white hover:bg-blaze/90"
@@ -78,19 +81,22 @@ export function Navbar() {
           )}
         </nav>
 
-        <button
-          type="button"
-          className="md:hidden"
-          aria-label="Toggle menu"
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <X /> : <Menu />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="text-ink"
+            aria-label="Toggle menu"
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
 
       {open && (
-        <div className="border-t border-moss/10 bg-mist px-4 py-3 md:hidden">
-          <div className="flex flex-col gap-3">
+        <div className="border-t border-line bg-mist px-4 py-3 md:hidden">
+          <div className="flex flex-col gap-3 text-ink">
             {publicLinks.map((l) => (
               <Link key={l.href} href={l.href} onClick={() => setOpen(false)}>
                 {l.label}

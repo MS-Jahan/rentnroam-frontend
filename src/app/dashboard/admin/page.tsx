@@ -69,9 +69,9 @@ export default function AdminDashboardPage() {
       <p className="mt-1 text-ink/60">Platform overview and moderation.</p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
-        <Stat label="Users" value={String(users.data?.meta.total ?? "—")} />
-        <Stat label="Gear listings" value={String(gear.data?.meta.total ?? "—")} />
-        <Stat label="Rentals" value={String(rentals.data?.meta.total ?? "—")} />
+        <Stat label="Users" value={String(users.data?.meta.total ?? "-")} />
+        <Stat label="Gear listings" value={String(gear.data?.meta.total ?? "-")} />
+        <Stat label="Rentals" value={String(rentals.data?.meta.total ?? "-")} />
       </div>
 
       <div className="mt-8 flex flex-wrap gap-2">

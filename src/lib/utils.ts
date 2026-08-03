@@ -17,29 +17,29 @@ export function formatMoney(value: string | number) {
 export function statusBadgeClass(status: RentalStatus | string) {
   switch (status) {
     case "PLACED":
-      return "bg-amber-100 text-amber-800";
+      return "bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200";
     case "CONFIRMED":
-      return "bg-sky-100 text-sky-800";
+      return "bg-sky-100 text-sky-800 dark:bg-sky-900/50 dark:text-sky-200";
     case "PAID":
-      return "bg-violet-100 text-violet-800";
+      return "bg-violet-100 text-violet-800 dark:bg-violet-900/50 dark:text-violet-200";
     case "PICKED_UP":
-      return "bg-emerald-100 text-emerald-800";
+      return "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200";
     case "RETURNED":
-      return "bg-slate-200 text-slate-700";
+      return "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200";
     case "CANCELLED":
-      return "bg-red-100 text-red-800";
+      return "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200";
     case "AVAILABLE":
-      return "bg-emerald-100 text-emerald-800";
+      return "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200";
     case "ACTIVE":
-      return "bg-emerald-100 text-emerald-800";
+      return "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200";
     case "SUSPENDED":
-      return "bg-red-100 text-red-800";
+      return "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200";
     case "COMPLETED":
-      return "bg-emerald-100 text-emerald-800";
+      return "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200";
     case "PENDING":
-      return "bg-amber-100 text-amber-800";
+      return "bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200";
     default:
-      return "bg-slate-100 text-slate-700";
+      return "bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200";
   }
 }
 

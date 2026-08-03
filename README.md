@@ -24,7 +24,7 @@ Set `NEXT_PUBLIC_API_URL` in `.env.local` if you point at a different backend.
 
 ## Useful files
 
-- [API_INTEGRATION.md](./API_INTEGRATION.md) — which screens call which endpoints
+- [API_INTEGRATION.md](./API_INTEGRATION.md) - which screens call which endpoints
 
 ## Demo accounts
 

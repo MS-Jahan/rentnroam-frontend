@@ -135,7 +135,7 @@ function GearBrowseInner() {
               ))}
             </div>
           ) : gear.isError ? (
-            <p className="rounded-lg border border-red-200 bg-red-50 p-6 text-red-700">
+            <p className="rounded-lg border border-red-200 bg-red-50 p-6 text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
               {(gear.error as Error).message}
             </p>
           ) : !gear.data?.items.length ? (

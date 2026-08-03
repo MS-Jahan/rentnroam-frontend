@@ -63,7 +63,7 @@ export default function RegisterPage() {
     <div className="mx-auto max-w-md px-4 py-14">
       <h1 className="font-display text-4xl uppercase text-ink">Join GearUp</h1>
       <p className="mt-2 text-sm text-ink/60">
-        Choose a role — customer to rent, or provider to list gear.
+        Choose a role - customer to rent, or provider to list gear.
       </p>
       <form onSubmit={onSubmit} className="mt-8 space-y-4 rounded-xl border border-moss/10 bg-snow p-6">
         <div>

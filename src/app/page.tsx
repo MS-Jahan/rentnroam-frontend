@@ -26,7 +26,7 @@ export default async function HomePage() {
               Rent trail-ready gear by the day
             </h1>
             <p className="animate-rise-delay mt-4 max-w-lg text-base text-white/75 md:text-lg">
-              Bikes, boards, tents, and climbing kits from local providers — pick
+              Bikes, boards, tents, and climbing kits from local providers - pick
               dates, pay securely, hit the trail.
             </p>
             <div className="animate-rise-delay mt-8 flex flex-wrap gap-3">
