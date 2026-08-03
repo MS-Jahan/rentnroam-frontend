@@ -135,7 +135,7 @@ export default function CustomerDashboardPage() {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex flex-wrap gap-2">
-                          {["PLACED", "CONFIRMED"].includes(o.status) &&
+                          {o.status === "CONFIRMED" &&
                             o.payment?.status !== "COMPLETED" && (
                               <Button
                                 className="!px-2 !py-1 text-xs"
