@@ -34,9 +34,18 @@ export default function ProviderDashboardPage() {
 
   const removeGear = useMutation({
     mutationFn: (id: string) =>
-      apiClient(`/api/provider/gear/${id}`, { auth: true, method: "DELETE" }),
-    onSuccess: () => {
-      toast.success("Gear removed");
+      apiClient<{ status?: string } | null>(`/api/provider/gear/${id}`, {
+        auth: true,
+        method: "DELETE",
+      }),
+    onSuccess: (data, _id, context) => {
+      const markedUnavailable =
+        data && typeof data === "object" && "status" in data && data.status === "UNAVAILABLE";
+      toast.success(
+        markedUnavailable
+          ? "Gear marked unavailable (has rental history)"
+          : "Gear removed"
+      );
       qc.invalidateQueries({ queryKey: ["provider-gear"] });
     },
     onError: (e: Error) => toast.error(e.message),
