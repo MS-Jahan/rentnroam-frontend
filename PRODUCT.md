@@ -42,7 +42,7 @@ A complete rental loop with real mechanics — role-based dashboards, real auth,
 
 ## Brand Commitments
 
-- Product name is **RentNRoam**. This replaces the former name "GearUp"; repository names, copy, and demo email domains still say GearUp pending the rename.
+- Product name is **RentNRoam**. The complete rebranding from the former name "GearUp" has been applied across all UI components, brand copy, navigation headers, footers, package configs, and repository names (`MS-Jahan/rentnroam-frontend` and `MS-Jahan/rentnroam-api`).
 
 ## Evidence on Hand
 
