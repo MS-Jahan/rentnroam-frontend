@@ -13,8 +13,6 @@ import {
   Plus,
   Edit,
   Trash2,
-  TrendingUp,
-  PieChart as PieIcon,
   User,
   SlidersHorizontal,
   CheckCircle,
@@ -22,7 +20,7 @@ import {
   Truck,
   RotateCcw,
 } from "lucide-react";
-import { apiClient, ApiError } from "@/lib/api";
+import { apiClient } from "@/lib/api";
 import type { GearItem, GearStatus, Paginated, RentalOrder, ProviderAnalytics, Category } from "@/lib/types";
 import { formatMoney } from "@/lib/utils";
 import { StatusBadge } from "@/components/status-badge";
@@ -493,7 +491,7 @@ function ProviderDashboardInner() {
         <section className="space-y-6 pt-4">
           <div className="rounded-2xl border border-line bg-panel p-6 space-y-4 shadow-xs">
             <h3 className="font-semibold text-lg text-ink">Sport Categories</h3>
-            <p className="text-xs text-muted">Categories available for listing gear on GearUp.</p>
+            <p className="text-xs text-muted">Categories available for listing gear on RentNRoam.</p>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {(categories.data || []).map((cat) => (

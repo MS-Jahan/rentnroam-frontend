@@ -7,11 +7,8 @@ import {
   Star,
   Users,
   Award,
-  Layers,
   ArrowRight,
   Sparkles,
-  ChevronDown,
-  CheckCircle,
 } from "lucide-react";
 import { apiRequest } from "@/lib/api";
 import type { GearItem, Category, Paginated } from "@/lib/types";
@@ -236,7 +233,7 @@ export default async function HomePage() {
         <div className="rounded-3xl border border-line bg-panel p-8 sm:p-12 shadow-xs">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <Badge variant="default" className="mb-2">Simple 3-Step Process</Badge>
-            <h2 className="font-display text-3xl sm:text-4xl uppercase text-ink">How GearUp Works</h2>
+            <h2 className="font-display text-3xl sm:text-4xl uppercase text-ink">How RentNRoam Works</h2>
             <p className="mt-2 text-sm text-muted">
               Renting outdoor equipment has never been faster or safer.
             </p>
@@ -300,7 +297,7 @@ export default async function HomePage() {
       <section className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="text-center max-w-2xl mx-auto mb-10">
           <Badge variant="secondary" className="mb-2">Platform Benefits</Badge>
-          <h2 className="font-display text-3xl sm:text-4xl uppercase text-ink">Why Choose GearUp</h2>
+          <h2 className="font-display text-3xl sm:text-4xl uppercase text-ink">Why Choose RentNRoam</h2>
           <p className="mt-2 text-sm text-muted">
             The smartest way to access high-grade sports equipment without buying.
           </p>
@@ -349,7 +346,7 @@ export default async function HomePage() {
           <Badge variant="default" className="mb-2">Community Feedback</Badge>
           <h2 className="font-display text-3xl sm:text-4xl uppercase text-ink">What Adventurers Say</h2>
           <p className="mt-2 text-sm text-muted">
-            Real experiences from renters using GearUp equipment.
+            Real experiences from renters using RentNRoam equipment.
           </p>
         </div>
 
@@ -415,11 +412,11 @@ export default async function HomePage() {
           <div className="rounded-3xl bg-moss text-white p-8 sm:p-10 space-y-4 flex flex-col justify-between shadow-lg">
             <div>
               <span className="inline-block rounded-full bg-blaze px-3 py-1 text-xs font-bold uppercase tracking-wider text-white mb-2">
-                Earn With GearUp
+                Earn With RentNRoam
               </span>
               <h3 className="font-display text-2xl sm:text-3xl uppercase text-white">Have Outdoor Gear Sitting Idle?</h3>
               <p className="text-sm text-white/80 mt-2">
-                Turn your bikes, tents, and water sports gear into extra income by listing on GearUp.
+                Turn your bikes, tents, and water sports gear into extra income by listing on RentNRoam.
               </p>
             </div>
             <div className="pt-4">

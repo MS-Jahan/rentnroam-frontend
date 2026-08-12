@@ -19,14 +19,14 @@ const body = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
-  title: "GearUp - Rent Sports & Outdoor Gear",
+  title: "RentNRoam - Rent Sports & Outdoor Gear",
   description: "Rent sports and outdoor equipment instantly from trusted providers.",
 };
 
 const themeInitScript = `
 (function () {
   try {
-    var raw = localStorage.getItem('gearup-theme');
+    var raw = localStorage.getItem('rentnroam-theme') || localStorage.getItem('gearup-theme');
     var theme = 'light';
     if (raw) {
       var parsed = JSON.parse(raw);

@@ -14,6 +14,7 @@ import { FormField } from "@/components/ui/form-field";
 import { Badge } from "@/components/ui/badge";
 import { useAuthStore } from "@/store/auth";
 import type { AuthPayload } from "@/lib/types";
+import { startOAuth } from "@/lib/oauth";
 import { dashboardPath, formatApiErrorMessage } from "@/lib/utils";
 
 const registerSchema = z.object({
@@ -74,7 +75,7 @@ export default function RegisterPage() {
       }
       const authData = json.data as AuthPayload;
       setUser(authData.user);
-      toast.success("Account created successfully! Welcome to GearUp.");
+      toast.success("Account created successfully! Welcome to RentNRoam.");
       router.push(dashboardPath(authData.user.role));
       router.refresh();
     } catch (err) {
@@ -86,17 +87,11 @@ export default function RegisterPage() {
     }
   }
 
-  function handleSocialClick(provider: string) {
-    toast.info(
-      `${provider} registration is disabled in demo mode. Please complete the form below or use Demo Login.`
-    );
-  }
-
   return (
     <div className="mx-auto max-w-md px-4 py-12 space-y-6">
       <div className="text-center space-y-2">
         <Badge variant="default" className="mx-auto">New Account</Badge>
-        <h1 className="font-display text-4xl uppercase text-ink">Join GearUp Marketplace</h1>
+        <h1 className="font-display text-4xl uppercase text-ink">Join RentNRoam Marketplace</h1>
         <p className="text-sm text-muted">
           Create an account to start renting or listing sports equipment.
         </p>
@@ -215,7 +210,7 @@ export default function RegisterPage() {
           <div className="grid grid-cols-2 gap-2">
             <button
               type="button"
-              onClick={() => handleSocialClick("Google")}
+              onClick={() => startOAuth("google", { role: selectedRole })}
               className="flex items-center justify-center gap-2 rounded-xl border border-line bg-snow py-2.5 text-xs font-medium text-ink hover:bg-moss/5 transition"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24">
@@ -240,7 +235,7 @@ export default function RegisterPage() {
             </button>
             <button
               type="button"
-              onClick={() => handleSocialClick("Facebook")}
+              onClick={() => startOAuth("facebook", { role: selectedRole })}
               className="flex items-center justify-center gap-2 rounded-xl border border-line bg-snow py-2.5 text-xs font-medium text-ink hover:bg-moss/5 transition"
             >
               <svg className="h-4 w-4 fill-[#1877F2]" viewBox="0 0 24 24">

@@ -82,7 +82,7 @@ export default function ContactPage() {
       <div className="text-center max-w-3xl mx-auto space-y-3">
         <Badge variant="default" className="mx-auto">Get In Touch</Badge>
         <h1 className="font-display text-4xl sm:text-5xl uppercase text-ink">
-          Contact GearUp Support
+          Contact RentNRoam Support
         </h1>
         <p className="text-sm text-muted leading-relaxed">
           Have a question about a rental order, payment inquiry, or provider partnership? Drop us a message.
@@ -111,7 +111,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-semibold text-ink">Email Support</p>
-                  <p className="text-xs text-muted">support@gearup.com</p>
+                  <p className="text-xs text-muted">support@rentnroam.com</p>
                 </div>
               </div>
 

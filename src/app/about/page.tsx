@@ -11,7 +11,7 @@ export default function AboutPage() {
           Connecting Adventurers With Local Outdoor Gear
         </h1>
         <p className="text-base sm:text-lg text-muted leading-relaxed">
-          GearUp was built on a simple premise: high-quality sports and outdoor equipment should be accessible to everyone without the burden of expensive ownership.
+          RentNRoam was built on a simple premise: high-quality sports and outdoor equipment should be accessible to everyone without the burden of expensive ownership.
         </p>
       </div>
 
@@ -72,7 +72,7 @@ export default function AboutPage() {
       <div className="text-center max-w-xl mx-auto space-y-6 pt-4">
         <h2 className="font-display text-3xl uppercase text-ink">Ready for Your Next Trip?</h2>
         <p className="text-sm text-muted">
-          Browse our equipment catalog or list your inventory on GearUp today.
+          Browse our equipment catalog or list your inventory on RentNRoam today.
         </p>
         <div className="flex justify-center gap-4">
           <Link

@@ -29,7 +29,7 @@ export function HomeNewsletter() {
         throw new Error(json.message || "Failed to subscribe");
       }
       setSubscribed(true);
-      toast.success("Subscribed! Thank you for joining GearUp updates.");
+      toast.success("Subscribed! Thank you for joining RentNRoam updates.");
       setEmail("");
     } catch (err: any) {
       // Fallback: direct public API request if proxy isn't set up yet
@@ -41,7 +41,7 @@ export function HomeNewsletter() {
         });
         if (res.ok) {
           setSubscribed(true);
-          toast.success("Subscribed! Thank you for joining GearUp updates.");
+          toast.success("Subscribed! Thank you for joining RentNRoam updates.");
           setEmail("");
           return;
         }
@@ -57,7 +57,7 @@ export function HomeNewsletter() {
       {subscribed ? (
         <div className="flex items-center gap-2 rounded-xl bg-emerald-500/10 p-4 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
           <CheckCircle2 className="h-5 w-5 shrink-0" />
-          <p className="text-sm font-medium">You are subscribed to GearUp newsletter!</p>
+          <p className="text-sm font-medium">You are subscribed to RentNRoam newsletter!</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">

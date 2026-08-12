@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Star, MapPin, Shield, Calendar, ArrowLeft, Store, Package, CheckCircle2 } from "lucide-react";
+import { Star, MapPin, Shield, ArrowLeft, Store, Package } from "lucide-react";
 import { apiClient, apiRequest, ApiError } from "@/lib/api";
 import type { GearItem, RentalOrder, Paginated } from "@/lib/types";
 import { formatMoney, statusBadgeClass, cn, toIsoDateStart } from "@/lib/utils";

@@ -10,16 +10,16 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2 font-display text-2xl uppercase tracking-wide text-white">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blaze text-white font-bold text-lg">
-                G
+                R
               </span>
-              Gear<span className="text-blaze">Up</span>
+              Rent<span className="text-blaze">NRoam</span>
             </Link>
             <p className="text-sm text-footer-text/70 leading-relaxed">
               The premier sports & outdoor equipment rental platform. Pick dates, pay securely with Stripe, and conquer the trail.
             </p>
             <div className="flex items-center gap-3 text-footer-text/60">
               <a
-                href="https://github.com/MS-Jahan/gearup-frontend"
+                href="https://github.com/MS-Jahan/rentnroam-frontend"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-blaze transition"
@@ -28,7 +28,7 @@ export function Footer() {
                 <Code2 className="h-5 w-5" />
               </a>
               <a
-                href="https://github.com/MS-Jahan/gearup-api"
+                href="https://github.com/MS-Jahan/rentnroam-api"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-blaze transition"
@@ -86,7 +86,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-footer-text/70">
               <li>
                 <Link href="/about" className="hover:text-blaze transition">
-                  About GearUp
+                  About RentNRoam
                 </Link>
               </li>
               <li>
@@ -122,7 +122,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-blaze shrink-0" />
-                <span>support@gearup.com</span>
+                <span>support@rentnroam.com</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-blaze shrink-0" />
@@ -144,7 +144,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-footer-text/10 flex flex-col sm:flex-row items-center justify-between text-xs text-footer-text/50 gap-4">
-          <p>© {new Date().getFullYear()} GearUp Rental Marketplace. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} RentNRoam Rental Marketplace. All rights reserved.</p>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-footer-text/80">Privacy</Link>
             <Link href="/terms" className="hover:text-footer-text/80">Terms</Link>

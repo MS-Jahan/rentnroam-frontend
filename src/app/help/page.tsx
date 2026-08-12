@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HelpCircle, Mail, MessageSquare, BookOpen, ShieldCheck } from "lucide-react";
+import { Mail, BookOpen, ShieldCheck } from "lucide-react";
 import { HomeFaq } from "@/components/home-faq";
 import { Badge } from "@/components/ui/badge";
 

@@ -13,14 +13,14 @@ export default function PrivacyPage() {
         <section className="space-y-2">
           <h2 className="font-semibold text-lg text-ink">1. Information We Collect</h2>
           <p>
-            When you register an account or place a rental order on GearUp, we collect personal information necessary to facilitate sports equipment rentals. This includes your name, email address, phone number, and account role (Customer, Provider, or Admin).
+            When you register an account or place a rental order on RentNRoam, we collect personal information necessary to facilitate sports equipment rentals. This includes your name, email address, phone number, and account role (Customer, Provider, or Admin).
           </p>
         </section>
 
         <section className="space-y-2">
           <h2 className="font-semibold text-lg text-ink">2. Payment Processing via Stripe</h2>
           <p>
-            GearUp integrates securely with Stripe Checkout for processing credit card payments and rental deposits. We do not store full credit card numbers or CVV codes on our servers. All transaction details are tokenized and encrypted according to PCI-DSS Level 1 compliance standards.
+            RentNRoam integrates securely with Stripe Checkout for processing credit card payments and rental deposits. We do not store full credit card numbers or CVV codes on our servers. All transaction details are tokenized and encrypted according to PCI-DSS Level 1 compliance standards.
           </p>
         </section>
 
@@ -43,7 +43,7 @@ export default function PrivacyPage() {
         <section className="space-y-2">
           <h2 className="font-semibold text-lg text-ink">5. Your Data Rights</h2>
           <p>
-            You have the right to access, update, or request deletion of your personal data at any time via your account profile settings or by contacting our support team at support@gearup.com.
+            You have the right to access, update, or request deletion of your personal data at any time via your account profile settings or by contacting our support team at support@rentnroam.com.
           </p>
         </section>
       </div>

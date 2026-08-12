@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Search, Filter, RefreshCw, SlidersHorizontal } from "lucide-react";
+import { Search, RefreshCw, SlidersHorizontal } from "lucide-react";
 import { apiRequest } from "@/lib/api";
 import type { Category, GearItem, Paginated } from "@/lib/types";
 import { GearCard, GearCardSkeleton } from "@/components/gear-card";

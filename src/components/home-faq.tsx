@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 const faqs = [
   {
-    q: "How does renting gear on GearUp work?",
+    q: "How does renting gear on RentNRoam work?",
     a: "Select your desired gear, pick your rental start and end dates, and submit a rental request. Once the provider approves your request, you can complete the secure payment via Stripe and pick up the gear at the agreed location.",
   },
   {
@@ -18,7 +18,7 @@ const faqs = [
     a: "All renters agree to our Rental Agreement terms. Minor wear-and-tear is expected, but for major damage or loss, renters are responsible for repair or replacement costs as coordinated with the provider.",
   },
   {
-    q: "How do I become a GearUp Provider?",
+    q: "How do I become a RentNRoam Provider?",
     a: "Sign up for an account, choose the Provider role during registration or in your profile, and start listing your outdoor inventory in minutes!",
   },
   {
