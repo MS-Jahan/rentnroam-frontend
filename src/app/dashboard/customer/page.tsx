@@ -10,10 +10,8 @@ import {
   CreditCard,
   Star,
   Clock,
-  Search,
   SlidersHorizontal,
   User,
-  Settings,
   X,
   AlertCircle,
 } from "lucide-react";
@@ -22,10 +20,11 @@ import type { Paginated, Payment, RentalOrder, Review } from "@/lib/types";
 import { formatMoney } from "@/lib/utils";
 import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
-import { Input, Label, Textarea } from "@/components/ui/field";
+import { Label, Textarea } from "@/components/ui/field";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
-import { TableSkeleton, StatSkeleton } from "@/components/ui/skeleton";
+import { TableSkeleton } from "@/components/ui/skeleton";
+import { ChartCard } from "@/components/ui/chart-card";
 import { Pagination } from "@/components/pagination";
 import { ProfilePasswordForm } from "@/components/profile-password-form";
 import { useAuthStore } from "@/store/auth";
@@ -81,6 +80,33 @@ function CustomerDashboardInner() {
     const reviewsCount = itemList.filter((o) => !!o.review).length;
     return { active, pending, spent, reviewsCount };
   }, [orders.data, payments.data]);
+
+  const monthlySpendingData = useMemo(() => {
+    const paymentList = payments.data?.items || [];
+    const monthMap: Record<string, number> = {};
+    const months: string[] = [];
+    const now = new Date();
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const label = d.toLocaleDateString("en-US", { month: "short" });
+      months.push(label);
+      monthMap[label] = 0;
+    }
+    paymentList.forEach((p) => {
+      if (p.status === "COMPLETED") {
+        const d = new Date(p.createdAt);
+        const label = d.toLocaleDateString("en-US", { month: "short" });
+        if (monthMap[label] !== undefined) {
+          monthMap[label] += Number(p.amount);
+        }
+      }
+    });
+    return months.map((label) => ({
+      label,
+      value: monthMap[label],
+      spending: monthMap[label],
+    }));
+  }, [payments.data]);
 
   // Mutations
   const cancel = useMutation({
@@ -188,6 +214,18 @@ function CustomerDashboardInner() {
               <p className="text-xs text-muted">Submitted feedback items</p>
             </div>
           </div>
+
+          {/* Monthly Spending Chart */}
+          <ChartCard
+            title="Monthly Spending"
+            description="Your completed rental payments over the last 6 months"
+            type="bar"
+            data={monthlySpendingData}
+            dataKey="spending"
+            nameKey="label"
+            valueFormatter={(val) => formatMoney(val)}
+            loading={payments.isLoading}
+          />
 
           {/* Recent Orders Section */}
           <div className="rounded-2xl border border-line bg-panel p-6 space-y-4 shadow-xs">

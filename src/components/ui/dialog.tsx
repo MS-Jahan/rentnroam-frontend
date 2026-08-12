@@ -26,7 +26,6 @@ export function Dialog({
 }
 
 export function DialogTrigger({
-  asChild,
   children,
   ...props
 }: {
