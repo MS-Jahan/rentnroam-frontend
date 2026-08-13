@@ -9,12 +9,16 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get(TOKEN_COOKIE)?.value;
   const role = request.cookies.get(ROLE_COOKIE)?.value;
 
-  if (pathname.startsWith("/dashboard")) {
+  if (pathname === "/dashboard" || pathname.startsWith("/dashboard/")) {
     if (!token || !role) {
       const url = request.nextUrl.clone();
       url.pathname = "/auth/login";
       url.searchParams.set("next", pathname);
       return NextResponse.redirect(url);
+    }
+
+    if (pathname === "/dashboard") {
+      return NextResponse.redirect(new URL(homeFor(role), request.url));
     }
 
     if (pathname.startsWith("/dashboard/admin") && role !== "ADMIN") {
@@ -47,5 +51,5 @@ function homeFor(role: string) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/auth/login", "/auth/register"],
+  matcher: ["/dashboard", "/dashboard/:path*", "/auth/login", "/auth/register"],
 };

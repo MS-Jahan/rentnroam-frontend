@@ -20,7 +20,7 @@ import {
   Truck,
   RotateCcw,
 } from "lucide-react";
-import { apiClient } from "@/lib/api";
+import { apiClient, fetchCategoryItems } from "@/lib/api";
 import type { GearItem, GearStatus, Paginated, RentalOrder, ProviderAnalytics, Category } from "@/lib/types";
 import { formatMoney } from "@/lib/utils";
 import { StatusBadge } from "@/components/status-badge";
@@ -79,10 +79,7 @@ function ProviderDashboardInner() {
   // Categories query
   const categories = useQuery({
     queryKey: ["categories"],
-    queryFn: async () => {
-      const data = await apiClient<Paginated<Category>>("/api/categories");
-      return data.items;
-    },
+    queryFn: () => fetchCategoryItems(),
   });
 
   // Gear Status Mutation

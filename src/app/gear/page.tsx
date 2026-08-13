@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Search, RefreshCw, SlidersHorizontal } from "lucide-react";
-import { apiRequest } from "@/lib/api";
+import { apiRequest, fetchCategoryItems } from "@/lib/api";
 import type { Category, GearItem, Paginated } from "@/lib/types";
 import { GearCard, GearCardSkeleton } from "@/components/gear-card";
 import { Pagination } from "@/components/pagination";
@@ -59,10 +59,7 @@ function GearBrowseInner() {
 
   const categories = useQuery({
     queryKey: ["categories"],
-    queryFn: async () => {
-      const data = await apiRequest<Paginated<Category>>("/api/categories");
-      return data.items;
-    },
+    queryFn: () => fetchCategoryItems(),
   });
 
   const gear = useQuery({

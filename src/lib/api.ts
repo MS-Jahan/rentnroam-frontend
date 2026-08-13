@@ -1,4 +1,4 @@
-import type { ApiResponse } from "./types";
+import type { ApiResponse, Category, Paginated } from "./types";
 
 export const API_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -81,4 +81,12 @@ export async function apiClient<T>(
     );
   }
   return json.data as T;
+}
+
+/** Categories API returns `{ items: Category[] }`, not a bare array. */
+export async function fetchCategoryItems(options?: { auth?: boolean }) {
+  const data = options?.auth
+    ? await apiClient<Paginated<Category>>("/api/categories", { auth: true })
+    : await apiRequest<Paginated<Category>>("/api/categories");
+  return data.items ?? [];
 }

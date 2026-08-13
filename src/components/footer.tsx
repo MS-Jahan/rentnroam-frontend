@@ -2,6 +2,10 @@ import Link from "next/link";
 import { Mail, Phone, MapPin, Globe, Code2, ShieldCheck } from "lucide-react";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+const apiDocsUrl =
+  process.env.NEXT_PUBLIC_API_URL
+    ? `${process.env.NEXT_PUBLIC_API_URL}/api/docs`
+    : "http://localhost:5000/api/docs";
 
 export function Footer() {
   return (
@@ -134,7 +138,7 @@ export function Footer() {
               </li>
               <li className="pt-2">
                 <a
-                  href="/api/docs"
+                  href={apiDocsUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-lg border border-footer-text/20 px-3 py-1.5 text-xs font-semibold text-white hover:border-blaze hover:text-blaze transition"

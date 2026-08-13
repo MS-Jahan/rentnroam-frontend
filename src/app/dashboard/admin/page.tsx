@@ -15,7 +15,7 @@ import {
   User,
   X,
 } from "lucide-react";
-import { apiClient } from "@/lib/api";
+import { apiClient, fetchCategoryItems } from "@/lib/api";
 import type { GearItem, Paginated, RentalOrder, User as UserType, AdminAnalytics, Category } from "@/lib/types";
 import { formatMoney } from "@/lib/utils";
 import { StatusBadge } from "@/components/status-badge";
@@ -86,10 +86,7 @@ function AdminDashboardInner() {
 
   const categories = useQuery({
     queryKey: ["categories"],
-    queryFn: async () => {
-      const data = await apiClient<Paginated<Category>>("/api/categories");
-      return data.items;
-    },
+    queryFn: () => fetchCategoryItems(),
   });
 
   // Mutations

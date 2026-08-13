@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { apiClient, apiRequest } from "@/lib/api";
+import { apiClient, apiRequest, fetchCategoryItems } from "@/lib/api";
 import type { Category, GearItem, Paginated } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { FieldError, Input, Label, Select, Textarea } from "@/components/ui/field";
@@ -28,7 +28,7 @@ export default function NewGearPage() {
 
   const categories = useQuery({
     queryKey: ["categories"],
-    queryFn: () => apiRequest<Paginated<Category>>("/api/categories?limit=50"),
+    queryFn: () => fetchCategoryItems(),
   });
 
   const create = useMutation({
@@ -101,7 +101,7 @@ export default function NewGearPage() {
           <Label>Category</Label>
           <Select required value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
             <option value="">Select…</option>
-            {categories.data?.items.map((c) => (
+            {categories.data?.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
               </option>

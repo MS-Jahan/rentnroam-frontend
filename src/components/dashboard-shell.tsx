@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import { useAuthStore } from "@/store/auth";
 import { cn, dashboardPath } from "@/lib/utils";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -162,7 +161,6 @@ export function DashboardShell({ children }: { children: ReactNode }) {
             </div>
 
             <div className="flex items-center gap-2.5">
-              <ThemeToggle />
               <DropdownMenu>
                 <DropdownMenuTrigger className="rounded-full ring-blaze/30 hover:ring-2 transition-all">
                   <Avatar className="h-9 w-9">

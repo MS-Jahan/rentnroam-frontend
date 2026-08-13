@@ -10,7 +10,7 @@ import {
   ArrowRight,
   Sparkles,
 } from "lucide-react";
-import { apiRequest } from "@/lib/api";
+import { apiRequest, fetchCategoryItems } from "@/lib/api";
 import type { GearItem, Category, Paginated } from "@/lib/types";
 import { GearCard } from "@/components/gear-card";
 import { HomeFaq } from "@/components/home-faq";
@@ -31,10 +31,7 @@ export default async function HomePage() {
   }
 
   try {
-    const categoryData = await apiRequest<Paginated<Category>>(
-      "/api/categories"
-    );
-    categories = categoryData.items;
+    categories = await fetchCategoryItems();
   } catch {
     categories = [];
   }
