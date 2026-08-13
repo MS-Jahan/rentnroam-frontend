@@ -43,3 +43,8 @@ next-env.d.ts
 .env.local
 .env*.local
 .env*
+
+# editor agent hooks (local only)
+.cursor/
+.codex/
+.claude/

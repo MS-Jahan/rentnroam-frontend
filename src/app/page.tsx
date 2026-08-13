@@ -8,13 +8,15 @@ import {
   Users,
   Award,
   ArrowRight,
-  Sparkles,
 } from "lucide-react";
 import { apiRequest, fetchCategoryItems } from "@/lib/api";
 import type { GearItem, Category, Paginated } from "@/lib/types";
 import { GearCard } from "@/components/gear-card";
 import { HomeFaq } from "@/components/home-faq";
 import { HomeNewsletter } from "@/components/home-newsletter";
+import { HomeHero } from "@/components/home/home-hero";
+import { PremiumSectionHeader } from "@/components/home/premium-section-header";
+import { PremiumSparkles } from "@/components/home/premium-sparkles";
 import { Badge } from "@/components/ui/badge";
 
 export default async function HomePage() {
@@ -77,103 +79,19 @@ export default async function HomePage() {
   return (
     <div className="space-y-16 md:space-y-24 pb-16">
       {/* SECTION 1: HERO */}
-      <section className="topo-bg relative min-h-[60vh] max-h-[70vh] flex items-center overflow-hidden text-white py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 w-full grid gap-12 lg:grid-cols-12 lg:items-center">
-          <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-blaze/40 bg-blaze/10 px-3.5 py-1 text-xs font-semibold text-blaze backdrop-blur-md animate-rise">
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>Trail-Ready Sports Equipment Rental</span>
-            </div>
-            
-            <h1 className="animate-rise-delay font-display text-4xl uppercase leading-none tracking-tight sm:text-6xl md:text-7xl">
-              Rent Premium Gear. <br />
-              <span className="text-blaze">Own the Adventure.</span>
-            </h1>
-
-            <p className="animate-rise-delay max-w-2xl text-base sm:text-lg text-white/80 leading-relaxed">
-              Bikes, kayaks, tents, and climbing kits from verified local shop owners. Pick dates, pay securely via Stripe, and hit the outdoors.
-            </p>
-
-            <div className="animate-rise-delay pt-2 flex flex-wrap items-center gap-4">
-              <Link
-                href="/gear"
-                className="inline-flex items-center gap-2 rounded-xl bg-blaze px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-white shadow-lg transition hover:bg-blaze/90 hover:shadow-blaze/20"
-              >
-                <span>Browse All Gear</span>
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/auth/register"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20"
-              >
-                <span>Become a Provider</span>
-              </Link>
-            </div>
-
-            {/* Quick stats ticker inside hero */}
-            <div className="pt-6 grid grid-cols-3 gap-4 border-t border-white/10 max-w-lg">
-              <div>
-                <p className="font-display text-2xl text-blaze">15+</p>
-                <p className="text-xs text-white/70">Verified Gear Items</p>
-              </div>
-              <div>
-                <p className="font-display text-2xl text-white">5</p>
-                <p className="text-xs text-white/70">Sport Categories</p>
-              </div>
-              <div>
-                <p className="font-display text-2xl text-emerald-400">4.9★</p>
-                <p className="text-xs text-white/70">Avg User Rating</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Interactive Category Teaser Grid */}
-          <div className="lg:col-span-5 hidden lg:block">
-            <div className="rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur-md shadow-2xl space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase tracking-wider text-blaze">
-                  Popular Categories
-                </span>
-                <span className="text-xs text-white/60">Live Inventory</span>
-              </div>
-              <div className="space-y-2.5">
-                {[
-                  { name: "Camping & Outdoor", count: "5 items", icon: "⛺" },
-                  { name: "Cycling & Mountain Bikes", count: "3 items", icon: "🚴" },
-                  { name: "Water Sports & Kayaks", count: "4 items", icon: "🚣" },
-                  { name: "Climbing & Harnesses", count: "2 items", icon: "🧗" },
-                  { name: "Fitness & Training", count: "2 items", icon: "🏋️" },
-                ].map((item, idx) => (
-                  <Link
-                    key={idx}
-                    href="/gear"
-                    className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/15 transition border border-white/10 group"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">{item.icon}</span>
-                      <span className="text-sm font-semibold text-white group-hover:text-blaze transition">
-                        {item.name}
-                      </span>
-                    </div>
-                    <span className="text-xs font-medium text-white/60 bg-white/10 px-2.5 py-1 rounded-full">
-                      {item.count}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeHero />
 
       {/* SECTION 2: FEATURED GEAR */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <Badge variant="default" className="mb-2">Verified Inventory</Badge>
-            <h2 className="font-display text-3xl sm:text-4xl uppercase text-ink">Featured Gear</h2>
-            <p className="mt-1 text-sm text-muted">Ready for immediate pickup and rental today.</p>
-          </div>
+          <PremiumSectionHeader
+            eyebrow="Verified Inventory"
+            title="Featured Gear"
+            description="Ready for immediate pickup and rental today."
+            centered={false}
+            showDivider={false}
+            className="mb-0 text-left max-w-none"
+          />
           <Link
             href="/gear"
             className="inline-flex items-center gap-1.5 text-sm font-bold text-blaze hover:underline"
@@ -199,21 +117,24 @@ export default async function HomePage() {
 
       {/* SECTION 3: CATEGORIES GRID */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <Badge variant="secondary" className="mb-2">Explore By Sport</Badge>
-          <h2 className="font-display text-3xl sm:text-4xl uppercase text-ink">Gear Categories</h2>
-          <p className="mt-2 text-sm text-muted">
-            Find specialized equipment designed for every outdoor activity.
-          </p>
-        </div>
+        <PremiumSectionHeader
+          eyebrow="Explore By Sport"
+          title="Gear Categories"
+          description="Find specialized equipment designed for every outdoor activity."
+          badgeVariant="secondary"
+        />
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {categories.map((cat) => (
             <Link
               key={cat.id}
               href={`/gear?category=${cat.slug}`}
-              className="group flex flex-col items-center text-center p-6 rounded-2xl border border-line bg-panel transition-all duration-200 hover:-translate-y-1 hover:border-blaze/40 hover:shadow-md"
+              className="group relative flex flex-col items-center text-center p-6 rounded-2xl border border-line bg-panel transition-all duration-200 hover:-translate-y-1 hover:border-blaze/40 hover:shadow-md overflow-hidden"
             >
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-x-6 top-3 h-px bg-gradient-to-r from-transparent via-blaze/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100"
+              />
               <div className="h-16 w-16 rounded-2xl bg-moss/10 dark:bg-snow/10 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
                 {categoryIcons[cat.slug] || "⚽"}
               </div>
@@ -230,14 +151,13 @@ export default async function HomePage() {
 
       {/* SECTION 4: HOW IT WORKS */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="rounded-3xl border border-line bg-panel p-8 sm:p-12 shadow-xs">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <Badge variant="default" className="mb-2">Simple 3-Step Process</Badge>
-            <h2 className="font-display text-3xl sm:text-4xl uppercase text-ink">How RentNRoam Works</h2>
-            <p className="mt-2 text-sm text-muted">
-              Renting outdoor equipment has never been faster or safer.
-            </p>
-          </div>
+        <div className="rounded-3xl border border-line bg-panel p-8 sm:p-12 shadow-xs relative overflow-hidden">
+          <PremiumSparkles variant="section" className="opacity-60" />
+          <PremiumSectionHeader
+            eyebrow="Simple 3-Step Process"
+            title="How RentNRoam Works"
+            description="Renting outdoor equipment has never been faster or safer."
+          />
 
           <div className="grid gap-8 md:grid-cols-3 relative">
             {[
@@ -272,8 +192,9 @@ export default async function HomePage() {
       </section>
 
       {/* SECTION 5: STATS BAND */}
-      <section className="bg-moss text-white py-14">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <section className="relative overflow-hidden bg-moss text-white py-14">
+        <PremiumSparkles variant="band" />
+        <div className="relative z-[1] mx-auto max-w-7xl px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
             <p className="font-display text-4xl md:text-5xl text-blaze">15+</p>
             <p className="text-sm text-white/80 mt-1 font-medium">Quality Gear Items</p>
@@ -295,13 +216,12 @@ export default async function HomePage() {
 
       {/* SECTION 6: WHY RENT WITH US */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <Badge variant="secondary" className="mb-2">Platform Benefits</Badge>
-          <h2 className="font-display text-3xl sm:text-4xl uppercase text-ink">Why Choose RentNRoam</h2>
-          <p className="mt-2 text-sm text-muted">
-            The smartest way to access high-grade sports equipment without buying.
-          </p>
-        </div>
+        <PremiumSectionHeader
+          eyebrow="Platform Benefits"
+          title="Why Choose RentNRoam"
+          description="The smartest way to access high-grade sports equipment without buying."
+          badgeVariant="secondary"
+        />
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {[
@@ -342,13 +262,11 @@ export default async function HomePage() {
 
       {/* SECTION 7: TESTIMONIALS (Seeded Demo Users) */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <Badge variant="default" className="mb-2">Community Feedback</Badge>
-          <h2 className="font-display text-3xl sm:text-4xl uppercase text-ink">What Adventurers Say</h2>
-          <p className="mt-2 text-sm text-muted">
-            Real experiences from renters using RentNRoam equipment.
-          </p>
-        </div>
+        <PremiumSectionHeader
+          eyebrow="Community Feedback"
+          title="What Adventurers Say"
+          description="Real experiences from renters using RentNRoam equipment."
+        />
 
         <div className="grid gap-6 md:grid-cols-3">
           {testimonials.map((t, idx) => (
@@ -382,13 +300,12 @@ export default async function HomePage() {
 
       {/* SECTION 8: FAQ ACCORDION */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <Badge variant="secondary" className="mb-2">Got Questions?</Badge>
-          <h2 className="font-display text-3xl sm:text-4xl uppercase text-ink">Frequently Asked Questions</h2>
-          <p className="mt-2 text-sm text-muted">
-            Everything you need to know about renting and listing gear.
-          </p>
-        </div>
+        <PremiumSectionHeader
+          eyebrow="Got Questions?"
+          title="Frequently Asked Questions"
+          description="Everything you need to know about renting and listing gear."
+          badgeVariant="secondary"
+        />
 
         <HomeFaq />
       </section>
