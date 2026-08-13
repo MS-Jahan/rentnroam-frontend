@@ -31,7 +31,10 @@ export default async function HomePage() {
   }
 
   try {
-    categories = await apiRequest<Category[]>("/api/categories");
+    const categoryData = await apiRequest<Paginated<Category>>(
+      "/api/categories"
+    );
+    categories = categoryData.items;
   } catch {
     categories = [];
   }

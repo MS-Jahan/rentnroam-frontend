@@ -86,7 +86,10 @@ function AdminDashboardInner() {
 
   const categories = useQuery({
     queryKey: ["categories"],
-    queryFn: () => apiClient<Category[]>("/api/categories"),
+    queryFn: async () => {
+      const data = await apiClient<Paginated<Category>>("/api/categories");
+      return data.items;
+    },
   });
 
   // Mutations

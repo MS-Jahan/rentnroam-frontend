@@ -59,8 +59,10 @@ function GearBrowseInner() {
 
   const categories = useQuery({
     queryKey: ["categories"],
-    queryFn: () =>
-      apiRequest<Category[]>("/api/categories"),
+    queryFn: async () => {
+      const data = await apiRequest<Paginated<Category>>("/api/categories");
+      return data.items;
+    },
   });
 
   const gear = useQuery({
@@ -152,17 +154,11 @@ function GearBrowseInner() {
               className="mt-1 rounded-xl"
             >
               <option value="">All Categories</option>
-              {Array.isArray(categories.data)
-                ? categories.data.map((c) => (
-                    <option key={c.id} value={c.slug}>
-                      {c.name}
-                    </option>
-                  ))
-                : (categories.data as any)?.items?.map((c: Category) => (
-                    <option key={c.id} value={c.slug}>
-                      {c.name}
-                    </option>
-                  ))}
+              {categories.data?.map((c) => (
+                <option key={c.id} value={c.slug}>
+                  {c.name}
+                </option>
+              ))}
             </Select>
           </div>
 
