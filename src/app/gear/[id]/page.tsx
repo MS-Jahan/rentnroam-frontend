@@ -6,11 +6,14 @@ import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
+import { Star, MapPin, Shield, Calendar, ArrowLeft, Store, Package, CheckCircle2 } from "lucide-react";
 import { apiClient, apiRequest, ApiError } from "@/lib/api";
-import type { GearItem, RentalOrder } from "@/lib/types";
+import type { GearItem, RentalOrder, Paginated } from "@/lib/types";
 import { formatMoney, statusBadgeClass, cn, toIsoDateStart } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input, Label, FieldError } from "@/components/ui/field";
+import { Badge } from "@/components/ui/badge";
+import { GearCard } from "@/components/gear-card";
 import { useAuthStore } from "@/store/auth";
 import { differenceInCalendarDays, formatISO, startOfToday } from "date-fns";
 
@@ -29,6 +32,23 @@ export default function GearDetailPage() {
     queryKey: ["gear", id],
     queryFn: () => apiRequest<GearItem>(`/api/gear/${id}`),
   });
+
+  const categorySlug = gearQuery.data?.category && typeof gearQuery.data.category === "object"
+    ? gearQuery.data.category.slug
+    : "";
+
+  // Fetch related items in the same category
+  const relatedQuery = useQuery({
+    queryKey: ["related-gear", categorySlug, id],
+    queryFn: () =>
+      apiRequest<Paginated<GearItem>>(`/api/gear?category=${categorySlug}&limit=4`),
+    enabled: !!categorySlug,
+  });
+
+  const relatedGear = useMemo(() => {
+    if (!relatedQuery.data?.items) return [];
+    return relatedQuery.data.items.filter((item) => item.id !== id).slice(0, 3);
+  }, [relatedQuery.data, id]);
 
   const days = useMemo(() => {
     if (!startDate || !endDate) return 0;
@@ -53,7 +73,7 @@ export default function GearDetailPage() {
         },
       }),
     onSuccess: (order) => {
-      toast.success("Rental order placed");
+      toast.success("Rental order placed successfully!");
       router.push(`/dashboard/customer?highlight=${order.id}`);
     },
     onError: (err: Error) => {
@@ -71,11 +91,11 @@ export default function GearDetailPage() {
       return;
     }
     if (user.role !== "CUSTOMER") {
-      toast.error("Only customers can rent gear");
+      toast.error("Only registered customers can place rental orders");
       return;
     }
     if (!endDate || days < 1) {
-      setFormError("End date must be after start date");
+      setFormError("Rental end date must be after start date");
       return;
     }
     rent.mutate();
@@ -83,20 +103,30 @@ export default function GearDetailPage() {
 
   if (gearQuery.isLoading) {
     return (
-      <div className="mx-auto max-w-6xl animate-pulse px-4 py-10">
-        <div className="h-80 rounded-xl bg-moss/10" />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 animate-pulse space-y-8">
+        <div className="h-6 w-32 bg-moss/10 rounded" />
+        <div className="grid gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-7 h-96 rounded-2xl bg-moss/10" />
+          <div className="lg:col-span-5 space-y-4">
+            <div className="h-8 w-3/4 rounded bg-moss/10" />
+            <div className="h-6 w-1/2 rounded bg-moss/10" />
+            <div className="h-40 rounded-2xl bg-moss/10" />
+          </div>
+        </div>
       </div>
     );
   }
 
   if (gearQuery.isError || !gearQuery.data) {
     return (
-      <div className="mx-auto max-w-lg px-4 py-20 text-center">
-        <p className="text-red-600">
-          {(gearQuery.error as Error)?.message || "Gear not found"}
-        </p>
-        <Link href="/gear" className="mt-4 inline-block text-fern">
-          Back to browse
+      <div className="mx-auto max-w-lg px-4 py-20 text-center space-y-4">
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
+          <p className="font-semibold text-lg">Equipment Not Found</p>
+          <p className="text-xs mt-1">{(gearQuery.error as Error)?.message || "Item may have been removed."}</p>
+        </div>
+        <Link href="/gear" className="inline-flex items-center gap-1.5 text-sm font-semibold text-blaze hover:underline">
+          <ArrowLeft className="h-4 w-4" />
+          Back to Equipment Catalog
         </Link>
       </div>
     );
@@ -108,63 +138,146 @@ export default function GearDetailPage() {
   const category =
     gear.category && "name" in gear.category ? gear.category.name : "Gear";
 
+  const rating = gear.avgRating ? Number(gear.avgRating) : null;
+
+  // Parse specifications JSON or object
+  let specsObj: Record<string, any> = {};
+  if (gear.specifications) {
+    if (typeof gear.specifications === "string") {
+      try {
+        specsObj = JSON.parse(gear.specifications);
+      } catch {
+        specsObj = { Specifications: gear.specifications };
+      }
+    } else if (typeof gear.specifications === "object") {
+      specsObj = gear.specifications;
+    }
+  }
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <div className="grid gap-10 lg:grid-cols-2">
-        <div>
-          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-moss/10">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 space-y-12">
+      {/* Back Link */}
+      <div>
+        <Link href="/gear" className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-blaze transition">
+          <ArrowLeft className="h-3.5 w-3.5" />
+          <span>Back to Catalog</span>
+        </Link>
+      </div>
+
+      {/* Detail Layout */}
+      <div className="grid gap-10 lg:grid-cols-12 items-start">
+        {/* Left Column: Gallery & Specifications */}
+        <div className="lg:col-span-7 space-y-6">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-line bg-panel shadow-sm">
             {img ? (
-              <Image src={img} alt={gear.name} fill className="object-cover" sizes="50vw" />
+              <Image src={img} alt={gear.name} fill className="object-cover" sizes="(max-width:1024px) 100vw, 60vw" priority />
             ) : (
               <div className="flex h-full items-center justify-center topo-bg text-white">
-                <span className="font-display text-6xl uppercase">{gear.brand}</span>
+                <span className="font-display text-5xl uppercase tracking-widest">{gear.brand}</span>
               </div>
             )}
+            <span className={cn("absolute left-4 top-4 rounded-full px-3 py-1 text-xs font-semibold backdrop-blur-xs shadow-xs", statusBadgeClass(gear.status))}>
+              {gear.status}
+            </span>
           </div>
+
+          {/* Image Thumbnails */}
           {images.length > 1 && (
-            <div className="mt-3 flex gap-2 overflow-x-auto">
+            <div className="flex gap-3 overflow-x-auto pb-2">
               {images.map((src, i) => (
                 <button
                   key={`${src}-${i}`}
                   type="button"
                   onClick={() => setActiveImage(i)}
                   className={cn(
-                    "relative h-16 w-20 shrink-0 overflow-hidden rounded-lg border-2",
-                    i === activeImage ? "border-fern" : "border-transparent"
+                    "relative h-20 w-24 shrink-0 overflow-hidden rounded-xl border-2 transition-all",
+                    i === activeImage ? "border-blaze shadow-md scale-95" : "border-line opacity-75 hover:opacity-100"
                   )}
                 >
-                  <Image src={src} alt="" fill className="object-cover" sizes="80px" />
+                  <Image src={src} alt="" fill className="object-cover" sizes="100px" />
                 </button>
               ))}
             </div>
           )}
+
+          {/* Specifications Table */}
+          {Object.keys(specsObj).length > 0 && (
+            <div className="rounded-2xl border border-line bg-panel p-6 space-y-4">
+              <h3 className="font-semibold text-lg text-ink flex items-center gap-2">
+                <Package className="h-5 w-5 text-blaze" />
+                <span>Technical Specifications</span>
+              </h3>
+              <div className="rounded-xl border border-line overflow-hidden divide-y divide-line/60">
+                {Object.entries(specsObj).map(([key, val]) => (
+                  <div key={key} className="flex justify-between items-center p-3 text-sm hover:bg-moss/5 dark:hover:bg-snow/5">
+                    <span className="font-medium text-muted capitalize">
+                      {key.replace(/([A-Z])/g, " $1")}
+                    </span>
+                    <span className="font-semibold text-ink text-right">
+                      {Array.isArray(val) ? val.join(", ") : String(val)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-fern">
-            {category} · {gear.brand}
-          </p>
-          <h1 className="mt-2 font-display text-4xl uppercase text-ink">{gear.name}</h1>
-          <div className="mt-3 flex flex-wrap items-center gap-3">
-            <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", statusBadgeClass(gear.status))}>
-              {gear.status}
-            </span>
-            <span className="text-sm text-ink/60">Stock: {gear.stock}</span>
-            {gear.provider && (
-              <span className="text-sm text-ink/60">Provider: {gear.provider.name}</span>
-            )}
-          </div>
-          <p className="mt-4 text-ink/70">{gear.description}</p>
-          <p className="mt-6 text-3xl font-semibold text-ink">
-            {formatMoney(gear.pricePerDay)}
-            <span className="text-base font-normal text-ink/50"> / day</span>
-          </p>
+        {/* Right Column: Information & Booking Form */}
+        <div className="lg:col-span-5 space-y-6">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-semibold uppercase tracking-wider text-moss dark:text-fern">
+                {category} · {gear.brand}
+              </span>
+              {rating !== null && rating > 0 && (
+                <div className="flex items-center gap-1.5 text-xs font-bold text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-full">
+                  <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
+                  <span>{rating.toFixed(1)}</span>
+                  {gear.reviewCount !== undefined && gear.reviewCount > 0 && (
+                    <span className="text-muted font-normal">({gear.reviewCount} reviews)</span>
+                  )}
+                </div>
+              )}
+            </div>
 
-          <form onSubmit={onRent} className="mt-8 space-y-4 rounded-xl border border-moss/10 bg-snow p-5">
-            <h2 className="font-display text-2xl uppercase">Rent now</h2>
+            <h1 className="font-display text-3xl sm:text-4xl uppercase text-ink leading-tight">{gear.name}</h1>
+
+            {/* Location & Provider Badges */}
+            <div className="flex flex-wrap items-center gap-3 text-xs text-muted pt-1">
+              {gear.location && (
+                <span className="inline-flex items-center gap-1 bg-moss/10 dark:bg-snow/10 px-2.5 py-1 rounded-full text-ink font-medium">
+                  <MapPin className="h-3.5 w-3.5 text-blaze" />
+                  {gear.location}
+                </span>
+              )}
+              <span className="inline-flex items-center gap-1 bg-moss/10 dark:bg-snow/10 px-2.5 py-1 rounded-full text-ink font-medium">
+                <Store className="h-3.5 w-3.5 text-moss dark:text-fern" />
+                {gear.provider?.name || "Local Shop"}
+              </span>
+              <span className="inline-flex items-center gap-1 bg-moss/10 dark:bg-snow/10 px-2.5 py-1 rounded-full text-ink font-medium">
+                Stock: {gear.stock} units
+              </span>
+            </div>
+
+            <p className="text-sm text-muted leading-relaxed pt-2">{gear.description}</p>
+
+            <div className="pt-3 flex items-baseline gap-2 border-t border-line/60">
+              <span className="text-3xl font-bold text-ink">{formatMoney(gear.pricePerDay)}</span>
+              <span className="text-sm text-muted">/ day</span>
+            </div>
+          </div>
+
+          {/* Rental Order Form */}
+          <form onSubmit={onRent} className="rounded-2xl border border-line bg-panel p-6 space-y-4 shadow-sm">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-lg text-ink">Reserve Rental</h3>
+              <Badge variant="outline" className="text-[11px]">Instant Confirmation</Badge>
+            </div>
+
             <div className="grid gap-3 sm:grid-cols-2">
               <div>
-                <Label htmlFor="start">Start date</Label>
+                <Label htmlFor="start" className="text-xs">Start Date</Label>
                 <Input
                   id="start"
                   type="date"
@@ -172,10 +285,11 @@ export default function GearDetailPage() {
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                   required
+                  className="mt-1 rounded-xl text-xs"
                 />
               </div>
               <div>
-                <Label htmlFor="end">End date</Label>
+                <Label htmlFor="end" className="text-xs">End Date</Label>
                 <Input
                   id="end"
                   type="date"
@@ -183,11 +297,13 @@ export default function GearDetailPage() {
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                   required
+                  className="mt-1 rounded-xl text-xs"
                 />
               </div>
             </div>
+
             <div>
-              <Label htmlFor="qty">Quantity</Label>
+              <Label htmlFor="qty" className="text-xs">Quantity (Max {gear.stock})</Label>
               <Input
                 id="qty"
                 type="number"
@@ -195,36 +311,94 @@ export default function GearDetailPage() {
                 max={gear.stock}
                 value={quantity}
                 onChange={(e) => setQuantity(Number(e.target.value))}
+                className="mt-1 rounded-xl text-xs"
               />
             </div>
-            <p className="text-sm text-ink/70">
-              {days > 0
-                ? `${days} day(s) · Estimated total ${formatMoney(total)}`
-                : "Select an end date after the start date."}
-            </p>
+
+            <div className="p-3.5 rounded-xl bg-moss/5 dark:bg-snow/5 border border-line/60 space-y-1">
+              <div className="flex justify-between text-xs text-muted">
+                <span>Duration</span>
+                <span>{days > 0 ? `${days} day(s)` : "Select dates"}</span>
+              </div>
+              <div className="flex justify-between text-sm font-bold text-ink pt-1 border-t border-line/40">
+                <span>Estimated Total</span>
+                <span className="text-blaze">{formatMoney(total)}</span>
+              </div>
+            </div>
+
             <FieldError message={formError} />
-            <Button type="submit" loading={rent.isPending} className="w-full">
-              {user ? "Place rental order" : "Sign in to rent"}
+
+            <Button
+              type="submit"
+              loading={rent.isPending}
+              disabled={gear.status !== "AVAILABLE" || gear.stock < 1}
+              className="w-full rounded-xl py-3 font-semibold bg-blaze text-white hover:bg-blaze/90 shadow-xs"
+            >
+              {gear.status !== "AVAILABLE"
+                ? "Currently Unavailable"
+                : user
+                ? "Place Rental Order"
+                : "Sign In to Rent"}
             </Button>
           </form>
 
-          {gear.reviews && gear.reviews.length > 0 && (
-            <div className="mt-8">
-              <h3 className="font-display text-xl uppercase">Recent reviews</h3>
-              <ul className="mt-3 space-y-3">
-                {gear.reviews.map((r) => (
-                  <li key={r.id} className="rounded-lg border border-moss/10 bg-snow p-3 text-sm">
-                    <p className="font-semibold">
-                      {r.rating}/5 · {r.customer?.name || "Customer"}
-                    </p>
-                    {r.comment && <p className="mt-1 text-ink/70">{r.comment}</p>}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {/* Security guarantee pill */}
+          <div className="flex items-center gap-2 p-3.5 rounded-xl border border-line bg-panel text-xs text-muted">
+            <Shield className="h-4 w-4 text-emerald-500 shrink-0" />
+            <span>Encrypted Stripe Checkout. Payments held until provider confirms.</span>
+          </div>
         </div>
       </div>
+
+      {/* Reviews Section */}
+      {gear.reviews && gear.reviews.length > 0 && (
+        <div className="pt-8 border-t border-line space-y-6">
+          <div>
+            <Badge variant="secondary">User Feedback</Badge>
+            <h3 className="font-display text-2xl uppercase text-ink mt-1">Customer Reviews</h3>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {gear.reviews.map((r) => (
+              <div key={r.id} className="p-5 rounded-2xl border border-line bg-panel space-y-2 shadow-xs">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1 text-amber-500">
+                    {Array.from({ length: r.rating }).map((_, i) => (
+                      <Star key={i} className="h-3.5 w-3.5 fill-amber-500" />
+                    ))}
+                  </div>
+                  <span className="text-xs text-muted">
+                    {new Date(r.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+                <p className="text-sm font-semibold text-ink">{r.customer?.name || "Verified Renter"}</p>
+                {r.comment && <p className="text-xs text-muted leading-relaxed">{r.comment}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Related Items Section */}
+      {relatedGear.length > 0 && (
+        <div className="pt-10 border-t border-line space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <Badge variant="default">Similar Equipment</Badge>
+              <h3 className="font-display text-2xl uppercase text-ink mt-1">Related Gear</h3>
+            </div>
+            <Link href={`/gear?category=${categorySlug}`} className="text-xs font-semibold text-blaze hover:underline">
+              View More in {category} →
+            </Link>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {relatedGear.map((item) => (
+              <GearCard key={item.id} gear={item} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

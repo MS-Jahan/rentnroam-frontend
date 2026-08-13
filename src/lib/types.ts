@@ -58,15 +58,48 @@ export interface GearItem {
   description: string;
   pricePerDay: string | number;
   stock: number;
-  specifications?: Record<string, unknown> | null;
+  location?: string | null;
+  specifications?: Record<string, unknown> | string | null;
   status: GearStatus;
   images: string[];
+  avgRating?: number | string | null;
+  reviewCount?: number;
   createdAt: string;
   updatedAt: string;
   category?: Category | { id: string; name: string; slug: string };
   provider?: { id: string; name: string; email?: string };
   _count?: { reviews: number };
   reviews?: Review[];
+}
+
+export interface ProviderAnalytics {
+  totals: {
+    totalRevenue: number;
+    totalOrders: number;
+    activeListings: number;
+    avgRating: number;
+  };
+  monthlyRevenue: Array<{ month: string; label: string; revenue: number }>;
+  ordersByStatus: Array<{ status: string; count: number }>;
+  topGear: Array<{
+    gearItemId: string;
+    name: string;
+    totalRevenue: number;
+    totalOrders: number;
+  }>;
+}
+
+export interface AdminAnalytics {
+  totals: {
+    totalUsers: number;
+    totalRentals: number;
+    totalRevenue: number;
+    totalGear: number;
+  };
+  usersByMonth: Array<{ month: string; label: string; count: number }>;
+  rentalsByMonth: Array<{ month: string; label: string; count: number }>;
+  revenueByMonth: Array<{ month: string; label: string; revenue: number }>;
+  gearByCategory: Array<{ category: string; count: number }>;
 }
 
 export interface RentalOrderItem {

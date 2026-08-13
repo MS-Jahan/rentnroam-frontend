@@ -9,6 +9,9 @@ import type { Category, GearItem, Paginated } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { FieldError, Input, Label, Select, Textarea } from "@/components/ui/field";
 
+const MAX_SPECS = 8;
+const MAX_IMAGES = 5;
+
 export default function NewGearPage() {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -17,7 +20,9 @@ export default function NewGearPage() {
   const [categoryId, setCategoryId] = useState("");
   const [pricePerDay, setPricePerDay] = useState("");
   const [stock, setStock] = useState("1");
-  const [imageUrl, setImageUrl] = useState("");
+  const [location, setLocation] = useState("");
+  const [specs, setSpecs] = useState<{ key: string; value: string }[]>([]);
+  const [images, setImages] = useState<string[]>([""]);
   const [status, setStatus] = useState("AVAILABLE");
   const [error, setError] = useState("");
 
@@ -38,8 +43,10 @@ export default function NewGearPage() {
           categoryId,
           pricePerDay: Number(pricePerDay),
           stock: Number(stock),
+          location: location.trim() || null,
+          specifications: buildSpecifications(specs),
+          images: images.map((url) => url.trim()).filter((url) => url !== ""),
           status,
-          images: imageUrl ? [imageUrl] : [],
         },
       }),
     onSuccess: () => {
@@ -60,6 +67,22 @@ export default function NewGearPage() {
       return;
     }
     create.mutate();
+  }
+
+  function updateSpec(index: number, field: "key" | "value", value: string) {
+    setSpecs((prev) => prev.map((s, i) => (i === index ? { ...s, [field]: value } : s)));
+  }
+
+  function removeSpec(index: number) {
+    setSpecs((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function updateImage(index: number, value: string) {
+    setImages((prev) => prev.map((url, i) => (i === index ? value : url)));
+  }
+
+  function removeImage(index: number) {
+    setImages((prev) => prev.filter((_, i) => i !== index));
   }
 
   return (
@@ -100,8 +123,53 @@ export default function NewGearPage() {
           </div>
         </div>
         <div>
-          <Label>Image URL (optional)</Label>
-          <Input type="url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://…" />
+          <Label>Location</Label>
+          <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Dhaka, Bangladesh" />
+        </div>
+        <div className="space-y-2">
+          <Label>Specifications</Label>
+          {specs.map((spec, i) => (
+            <div key={i} className="grid grid-cols-[1fr_1fr_auto] gap-2">
+              <Input value={spec.key} onChange={(e) => updateSpec(i, "key", e.target.value)} placeholder="Name (e.g. Weight)" />
+              <Input value={spec.value} onChange={(e) => updateSpec(i, "value", e.target.value)} placeholder="Value (e.g. 1.2 kg)" />
+              <Button type="button" variant="ghost" className="px-3" onClick={() => removeSpec(i)}>
+                Remove
+              </Button>
+            </div>
+          ))}
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => setSpecs((prev) => [...prev, { key: "", value: "" }])}
+            disabled={specs.length >= MAX_SPECS}
+          >
+            Add specification
+          </Button>
+        </div>
+        <div className="space-y-2">
+          <Label>Image URLs (optional)</Label>
+          {images.map((url, i) => (
+            <div key={i} className="flex gap-2">
+              <Input
+                type="url"
+                value={url}
+                onChange={(e) => updateImage(i, e.target.value)}
+                placeholder="https://…"
+                className="flex-1"
+              />
+              <Button type="button" variant="ghost" className="px-3" onClick={() => removeImage(i)}>
+                Remove
+              </Button>
+            </div>
+          ))}
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => setImages((prev) => [...prev, ""])}
+            disabled={images.length >= MAX_IMAGES}
+          >
+            Add image
+          </Button>
         </div>
         <div>
           <Label>Status</Label>
@@ -118,4 +186,14 @@ export default function NewGearPage() {
       </form>
     </div>
   );
+}
+
+function buildSpecifications(specs: { key: string; value: string }[]): Record<string, string> {
+  const result: Record<string, string> = {};
+  for (const spec of specs) {
+    const key = spec.key.trim();
+    const value = spec.value.trim();
+    if (key && value) result[key] = value;
+  }
+  return result;
 }
