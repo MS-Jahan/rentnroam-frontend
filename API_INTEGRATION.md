@@ -1,7 +1,7 @@
 # RentNRoam API Integration Guide
 
-**Backend API:** https://gearup-api.vercel.app  
-**Swagger API Docs:** https://gearup-api.vercel.app/api/docs  
+**Backend API:** https://rentnroam-api.vercel.app  
+**Swagger API Docs:** https://rentnroam-api.vercel.app/api/docs  
 **Frontend Repo:** https://github.com/MS-Jahan/rentnroam-frontend  
 **Backend Repo:** https://github.com/MS-Jahan/rentnroam-api  
 
@@ -91,8 +91,14 @@ Frontend flow: `startOAuth('google'|'facebook')` → backend OAuth URL → provi
 
 ## 6. Demo Credentials (Instructor §13 Requirement)
 
+See **[DEMO_CREDENTIALS.md](./DEMO_CREDENTIALS.md)** — identical in frontend and API repos, matches `prisma/seed.ts`.
+
 | Role | Email | Password | Access Level |
 |------|-------|----------|--------------|
 | **Admin** | `admin@gearup.com` | `Admin@12345` | Platform moderation, global analytics, user management |
-| **Provider** | `provider@gearup.com` | `Provider@123` | Inventory management, incoming orders, shop analytics |
-| **Customer** | `customer@gearup.com` | `Customer@123` | Gear browsing, Stripe rental checkout, order tracking, reviews |
+| **Provider** | `provider@gearup.com` | `Provider@123` | Adventure Gear Shop (primary demo provider) |
+| **Provider** | `summit@gearup.com` | `Summit@123` | Summit Rentals |
+| **Provider** | `wave@gearup.com` | `Wave@123` | Wave & Trail Co |
+| **Customer** | `customer@gearup.com` | `Customer@123` | Rahim Khan (primary demo customer) |
+| **Customer** | `alex@gearup.com` | `Alex@123` | Alex Rahman |
+| **Customer** | `sara@gearup.com` | `Sara@123` | Sara Islam |

@@ -25,15 +25,10 @@ All code changes have been verified with clean compilation checks (`npx tsc --no
 ### 2.3 Documentation Updates & Instructor §13 Submission Info
 - **`API_INTEGRATION.md`**: Fully updated with all endpoints including public contact (`POST /api/contact`), newsletter (`POST /api/newsletter`), provider & admin analytics (`GET /api/*/analytics`), profile password change (`PATCH /api/profile/password`), and demo login tables.
 - **Submission Requirements (Instructor §13):**
-  - **Live Frontend URL:** `https://gearup-frontend-kappa.vercel.app`
-  - **Live API URL:** `https://gearup-api.vercel.app`
-  - **Swagger API Docs:** `https://gearup-api.vercel.app/api/docs`
+  - **Live URLs:** https://rentnroam-frontend.vercel.app · https://rentnroam-api.vercel.app
   - **Frontend Repo:** `https://github.com/MS-Jahan/rentnroam-frontend`
   - **Backend Repo:** `https://github.com/MS-Jahan/rentnroam-api`
-  - **Demo Credentials:**
-    - Customer: `customer@gearup.com` / `Customer@123`
-    - Provider: `provider@gearup.com` / `Provider@123`
-    - Admin: `admin@gearup.com` / `Admin@12345`
+  - **Demo credentials:** [DEMO_CREDENTIALS.md](../DEMO_CREDENTIALS.md) — 7 seed accounts matching `prisma/seed.ts`
 
 ### 2.4 Code Cleanups & Warning Fixes
 - **Duplicate Provider Orders Route:** Replaced `src/app/dashboard/provider/orders/page.tsx` with a clean Next.js server redirect to `/dashboard/provider?tab=orders`.
@@ -61,9 +56,7 @@ All code changes have been verified with clean compilation checks (`npx tsc --no
    bash demo/run-all.sh
    ```
 
-3. **Vercel Deployment:**
-   - **Backend API:** Set `DATABASE_URL`, `DIRECT_URL`, `JWT_SECRET`, `CORS_ORIGINS`, `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`, `APP_URL`. Run `npx prisma migrate deploy` in build command.
-   - **Frontend:** Set `NEXT_PUBLIC_API_URL` pointing to backend Vercel URL.
+3. **Vercel Deployment:** See **[docs/VERCEL_DEPLOY.md](./VERCEL_DEPLOY.md)** for full backend + frontend steps (Neon, env vars, Stripe webhook, OAuth callbacks, verification checklist).
 
 4. **Browser Walkthrough Verification:**
    - Test full loop across Customer, Provider, and Admin roles:
@@ -73,6 +66,6 @@ All code changes have been verified with clean compilation checks (`npx tsc --no
 
 ## 4. Notes & Documented Deviations
 
-1. **Social Login:** Google and Facebook buttons trigger informative demo-mode toasts ("disabled in demo mode"), as OAuth apps require external domain verification.
+1. **Social Login:** Google/Facebook via passport.js — requires OAuth env vars on **new** API deploy (see VERCEL_DEPLOY.md).
 2. **Demo Email Domains:** Demo accounts use `@gearup.com` to maintain strict compatibility with seed scripts and pre-existing deployment accounts.
 3. **Seed Dates:** Hardcoded Feb–Aug 2026 for consistent analytics rendering.

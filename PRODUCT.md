@@ -46,7 +46,7 @@ A complete rental loop with real mechanics — role-based dashboards, real auth,
 
 ## Evidence on Hand
 
-- Live deployments: frontend (gearup-frontend-kappa.vercel.app) and API (gearup-api.vercel.app); API Swagger docs.
+- Live deployments: https://rentnroam-frontend.vercel.app + https://rentnroam-api.vercel.app (see `DEMO_CREDENTIALS.md`).
 - Working demo accounts for all three roles and a Stripe test card (see README.md).
 - Absences: no real customers, testimonials, reviews, or press. Future work must not fabricate any.
 

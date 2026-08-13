@@ -1,7 +1,7 @@
 import type { ApiResponse } from "./types";
 
 export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://gearup-api.vercel.app";
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export class ApiError extends Error {
   status: number;

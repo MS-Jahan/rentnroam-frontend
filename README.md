@@ -8,23 +8,19 @@ Next.js 15 application for renting sports and outdoor equipment. Connects to the
 
 | Deliverable | URL / Link |
 |-------------|------------|
-| **Live Website URL** | https://gearup-frontend-kappa.vercel.app |
-| **Backend API URL** | https://gearup-api.vercel.app |
-| **Backend Swagger Docs** | https://gearup-api.vercel.app/api/docs |
+| **Live Website URL** | https://rentnroam-frontend.vercel.app |
+| **Backend API URL** | https://rentnroam-api.vercel.app |
+| **Backend Swagger Docs** | https://rentnroam-api.vercel.app/api/docs |
 | **Frontend GitHub Repo** | https://github.com/MS-Jahan/rentnroam-frontend |
 | **Backend GitHub Repo** | https://github.com/MS-Jahan/rentnroam-api |
 
 ---
 
-## 🔑 Demo Credentials (One-Click Available on Sign In Page)
+## 🔑 Demo Credentials
 
-| Role | Email | Password | Features / Dashboard |
-|------|-------|----------|----------------------|
-| **Admin** | `admin@gearup.com` | `Admin@12345` | Platform-wide user management, gear moderation, system analytics charts |
-| **Provider** | `provider@gearup.com` | `Provider@123` | Inventory management, incoming rental fulfillment, shop revenue bar charts |
-| **Customer** | `customer@gearup.com` | `Customer@123` | Equipment browsing, rental booking, Stripe payments, monthly spending bar chart |
+Full seed account list (7 users): **[DEMO_CREDENTIALS.md](./DEMO_CREDENTIALS.md)**
 
-*Stripe Test Card:* `4242 4242 4242 4242` (expiry: any future date, CVC: `123`)
+Primary one-click sign-in accounts: Customer `customer@gearup.com` / `Customer@123`, Provider `provider@gearup.com` / `Provider@123`, Admin `admin@gearup.com` / `Admin@12345`
 
 ---
 
@@ -58,3 +54,4 @@ npm run dev
 
 - Frontend App: http://localhost:3000
 - API Integration Guide: [API_INTEGRATION.md](./API_INTEGRATION.md)
+- **Vercel deploy guide:** [docs/VERCEL_DEPLOY.md](./docs/VERCEL_DEPLOY.md)

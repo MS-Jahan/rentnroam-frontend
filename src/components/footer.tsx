@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Mail, Phone, MapPin, Globe, Code2, ShieldCheck } from "lucide-react";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
 export function Footer() {
   return (
     <footer className="mt-auto border-t border-line bg-footer text-footer-text">
@@ -36,15 +38,17 @@ export function Footer() {
               >
                 <Code2 className="h-5 w-5" />
               </a>
-              <a
-                href="https://gearup-frontend-kappa.vercel.app"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-blaze transition"
-                aria-label="Live website"
-              >
-                <Globe className="h-5 w-5" />
-              </a>
+              {siteUrl ? (
+                <a
+                  href={siteUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-blaze transition"
+                  aria-label="Live website"
+                >
+                  <Globe className="h-5 w-5" />
+                </a>
+              ) : null}
             </div>
           </div>
 

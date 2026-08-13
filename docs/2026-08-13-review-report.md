@@ -19,7 +19,7 @@ Scope: `rentnroam-frontend` + `rentnroam-api` on `feat/upgrade-session` / `main`
 
 - `prisma migrate dev` + `db:seed` on Postgres host
 - `demo/run-all.sh` against seeded DB
-- Redeploy API then frontend to Vercel (live sites still stale gearup URLs)
+- Deploy **new** Vercel projects — live at https://rentnroam-frontend.vercel.app + https://rentnroam-api.vercel.app (disable frontend Deployment Protection for public access)
 - Browser walkthrough all 3 roles + Stripe 4242
 - Set OAuth env vars on Vercel: `GOOGLE_*`, `FACEBOOK_*`, `FRONTEND_URL`, `APP_URL`
 
