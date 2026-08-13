@@ -16,7 +16,7 @@ import {
   Users,
 } from "lucide-react";
 import { useAuthStore } from "@/store/auth";
-import { cn, dashboardPath } from "@/lib/utils";
+import { cn, dashboardPath, tapSoft } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -108,6 +108,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
               href={`${base}?tab=${n.tab}`}
               className={cn(
                 "flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition",
+                tapSoft,
                 isActive
                   ? "border-blaze/40 bg-blaze/10 text-blaze"
                   : "border-line bg-panel text-muted hover:text-ink"
@@ -134,6 +135,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
                     href={`${base}?tab=${n.tab}`}
                     className={cn(
                       "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition",
+                      tapSoft,
                       isActive
                         ? "bg-blaze/10 text-blaze border-l-2 border-blaze"
                         : "text-muted hover:bg-moss/10 hover:text-ink dark:hover:bg-snow/10"

@@ -12,6 +12,7 @@ import { Input, Select, Label } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Suspense } from "react";
+import { cn, tapNav } from "@/lib/utils";
 
 function GearBrowseInner() {
   const searchParams = useSearchParams();
@@ -136,7 +137,7 @@ function GearBrowseInner() {
             <button
               type="button"
               onClick={resetFilters}
-              className="text-xs text-muted hover:text-blaze flex items-center gap-1"
+              className={cn("text-xs text-muted hover:text-blaze flex items-center gap-1", tapNav)}
             >
               <RefreshCw className="h-3 w-3" />
               Reset

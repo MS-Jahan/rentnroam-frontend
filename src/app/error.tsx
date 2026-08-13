@@ -1,5 +1,7 @@
 "use client";
 
+import { cn, tapPress } from "@/lib/utils";
+
 export default function Error({
   error,
   reset,
@@ -14,7 +16,7 @@ export default function Error({
       <button
         type="button"
         onClick={reset}
-        className="mt-6 rounded-md bg-moss px-4 py-2 text-sm font-semibold text-white"
+        className={cn("mt-6 rounded-md bg-moss px-4 py-2 text-sm font-semibold text-white", tapPress)}
       >
         Try again
       </button>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Star, MapPin, ArrowRight } from "lucide-react";
 import type { GearItem } from "@/lib/types";
-import { formatMoney, statusBadgeClass, cn } from "@/lib/utils";
+import { formatMoney, statusBadgeClass, cn, tapCard } from "@/lib/utils";
 
 export function GearCard({ gear }: { gear: GearItem }) {
   const img = gear.images?.[0];
@@ -14,7 +14,10 @@ export function GearCard({ gear }: { gear: GearItem }) {
   return (
     <Link
       href={`/gear/${gear.id}`}
-      className="group flex flex-col h-full overflow-hidden rounded-xl border border-line bg-panel shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+      className={cn(
+        "group flex flex-col h-full overflow-hidden rounded-xl border border-line bg-panel shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-md",
+        tapCard
+      )}
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-moss/5">
         {img ? (

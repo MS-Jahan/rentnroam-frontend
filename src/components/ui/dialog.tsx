@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { cn, tapPress } from "@/lib/utils";
 import { X } from "lucide-react";
 
 interface DialogContextValue {
@@ -37,6 +37,7 @@ export function DialogTrigger({
     <button
       type="button"
       onClick={() => ctx?.onOpenChange(true)}
+      className={tapPress}
       {...props}
     >
       {children}
@@ -84,7 +85,7 @@ export function DialogContent({
         <button
           type="button"
           onClick={() => ctx.onOpenChange(false)}
-          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-blaze/30"
+          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-blaze/30 active:scale-95"
         >
           <X className="h-4 w-4 text-ink" />
           <span className="sr-only">Close</span>

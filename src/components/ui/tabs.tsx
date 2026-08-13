@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { cn, tapSoft } from "@/lib/utils";
 
 interface TabsContextValue {
   value: string;
@@ -68,6 +68,7 @@ export function TabsTrigger({
       onClick={() => ctx?.onValueChange(value)}
       className={cn(
         "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3.5 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blaze/30 disabled:pointer-events-none disabled:opacity-50",
+        tapSoft,
         isActive
           ? "bg-panel text-ink shadow-sm font-semibold"
           : "text-muted hover:text-ink hover:bg-panel/50",

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Blaze } from "@/components/canvasui/Blaze";
+import { cn, tapCard, tapPress } from "@/lib/utils";
 import {
   PremiumGlowOrbs,
   PremiumSparkles,
@@ -59,14 +60,20 @@ export function HomeHero() {
             <div className="animate-rise-delay flex flex-wrap items-center gap-4 pt-2">
               <Link
                 href="/gear"
-                className="premium-cta-glow inline-flex items-center gap-2 rounded-xl bg-blaze px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blaze/90"
+                className={cn(
+                  "premium-cta-glow inline-flex items-center gap-2 rounded-xl bg-blaze px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blaze/90",
+                  tapPress
+                )}
               >
                 <span>Browse All Gear</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/auth/register"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20"
+                className={cn(
+                  "inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20",
+                  tapPress
+                )}
               >
                 <span>Become a Provider</span>
               </Link>
@@ -101,7 +108,10 @@ export function HomeHero() {
                   <Link
                     key={item.name}
                     href="/gear"
-                    className="group flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-3 transition hover:bg-white/15"
+                    className={cn(
+                      "group flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-3 transition hover:bg-white/15",
+                      tapCard
+                    )}
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{item.icon}</span>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Mail, BookOpen, ShieldCheck } from "lucide-react";
 import { HomeFaq } from "@/components/home-faq";
 import { Badge } from "@/components/ui/badge";
+import { cn, tapNav } from "@/lib/utils";
 
 export default function HelpPage() {
   return (
@@ -23,7 +24,7 @@ export default function HelpPage() {
           <BookOpen className="h-6 w-6 text-blaze mx-auto" />
           <h3 className="font-semibold text-base text-ink">Rental Guidelines</h3>
           <p className="text-xs text-muted">Learn how pickup, inspection, and returns work.</p>
-          <Link href="/terms" className="inline-block text-xs font-semibold text-blaze pt-1">
+          <Link href="/terms" className={cn("inline-block text-xs font-semibold text-blaze pt-1", tapNav)}>
             Read Terms →
           </Link>
         </div>
@@ -32,7 +33,7 @@ export default function HelpPage() {
           <ShieldCheck className="h-6 w-6 text-emerald-500 mx-auto" />
           <h3 className="font-semibold text-base text-ink">Stripe Protection</h3>
           <p className="text-xs text-muted">Understand security, holds, and refund policies.</p>
-          <Link href="/privacy" className="inline-block text-xs font-semibold text-blaze pt-1">
+          <Link href="/privacy" className={cn("inline-block text-xs font-semibold text-blaze pt-1", tapNav)}>
             Privacy Info →
           </Link>
         </div>
@@ -41,7 +42,7 @@ export default function HelpPage() {
           <Mail className="h-6 w-6 text-moss dark:text-fern mx-auto" />
           <h3 className="font-semibold text-base text-ink">Contact Support</h3>
           <p className="text-xs text-muted">Need personal assistance? Send our team a message.</p>
-          <Link href="/contact" className="inline-block text-xs font-semibold text-blaze pt-1">
+          <Link href="/contact" className={cn("inline-block text-xs font-semibold text-blaze pt-1", tapNav)}>
             Open Contact Form →
           </Link>
         </div>

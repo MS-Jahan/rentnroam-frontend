@@ -6,7 +6,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api";
 import type { RentalOrder } from "@/lib/types";
-import { formatMoney } from "@/lib/utils";
+import { formatMoney, cn, tapNav } from "@/lib/utils";
 import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
 
@@ -41,7 +41,7 @@ export default function PayOrderPage() {
     return (
       <div className="mx-auto max-w-lg px-4 py-16 text-center">
         <p className="text-red-600">{(order.error as Error)?.message || "Order not found"}</p>
-        <Link href="/dashboard/customer" className="mt-4 inline-block text-fern">
+        <Link href="/dashboard/customer" className={cn("mt-4 inline-block text-fern", tapNav)}>
           Back to dashboard
         </Link>
       </div>

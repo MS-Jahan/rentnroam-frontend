@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { Star, MapPin, Shield, ArrowLeft, Store, Package } from "lucide-react";
 import { apiClient, apiRequest, ApiError } from "@/lib/api";
 import type { GearItem, RentalOrder, Paginated } from "@/lib/types";
-import { formatMoney, statusBadgeClass, cn, toIsoDateStart } from "@/lib/utils";
+import { formatMoney, statusBadgeClass, cn, toIsoDateStart, tapNav, tapSoft } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input, Label, FieldError } from "@/components/ui/field";
 import { Badge } from "@/components/ui/badge";
@@ -124,7 +124,7 @@ export default function GearDetailPage() {
           <p className="font-semibold text-lg">Equipment Not Found</p>
           <p className="text-xs mt-1">{(gearQuery.error as Error)?.message || "Item may have been removed."}</p>
         </div>
-        <Link href="/gear" className="inline-flex items-center gap-1.5 text-sm font-semibold text-blaze hover:underline">
+        <Link href="/gear" className={cn("inline-flex items-center gap-1.5 text-sm font-semibold text-blaze hover:underline", tapNav)}>
           <ArrowLeft className="h-4 w-4" />
           Back to Equipment Catalog
         </Link>
@@ -158,7 +158,7 @@ export default function GearDetailPage() {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 space-y-12">
       {/* Back Link */}
       <div>
-        <Link href="/gear" className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-blaze transition">
+        <Link href="/gear" className={cn("inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-blaze transition", tapNav)}>
           <ArrowLeft className="h-3.5 w-3.5" />
           <span>Back to Catalog</span>
         </Link>
@@ -191,6 +191,7 @@ export default function GearDetailPage() {
                   onClick={() => setActiveImage(i)}
                   className={cn(
                     "relative h-20 w-24 shrink-0 overflow-hidden rounded-xl border-2 transition-all",
+                    tapSoft,
                     i === activeImage ? "border-blaze shadow-md scale-95" : "border-line opacity-75 hover:opacity-100"
                   )}
                 >
@@ -387,7 +388,7 @@ export default function GearDetailPage() {
               <Badge variant="default">Similar Equipment</Badge>
               <h3 className="font-display text-2xl uppercase text-ink mt-1">Related Gear</h3>
             </div>
-            <Link href={`/gear?category=${categorySlug}`} className="text-xs font-semibold text-blaze hover:underline">
+            <Link href={`/gear?category=${categorySlug}`} className={cn("text-xs font-semibold text-blaze hover:underline", tapNav)}>
               View More in {category} →
             </Link>
           </div>

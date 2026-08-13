@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, tapExpand } from "@/lib/utils";
 
 const faqs = [
   {
@@ -64,7 +64,10 @@ export function HomeFaq() {
             <button
               type="button"
               onClick={() => setOpenIndex(isOpen ? null : idx)}
-              className="flex w-full items-center justify-between p-5 text-left font-semibold text-ink transition-colors hover:text-blaze"
+              className={cn(
+                "flex w-full items-center justify-between p-5 text-left font-semibold text-ink transition-colors hover:text-blaze",
+                tapExpand
+              )}
               aria-expanded={isOpen}
             >
               <span>{faq.q}</span>

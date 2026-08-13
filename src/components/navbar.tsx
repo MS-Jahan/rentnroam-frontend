@@ -6,7 +6,7 @@ import { Menu, X, LayoutDashboard, Settings, LogOut } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/auth";
-import { cn, dashboardPath } from "@/lib/utils";
+import { cn, dashboardPath, tapNav, tapPress, tapSoft } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -54,7 +54,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-mist/90 backdrop-blur-md transition-colors">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2 font-display text-2xl uppercase tracking-wide text-ink">
+        <Link href="/" className={cn("flex items-center gap-2 font-display text-2xl uppercase tracking-wide text-ink", tapNav)}>
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blaze text-white font-bold text-lg shadow-xs">
             R
           </span>
@@ -70,6 +70,7 @@ export function Navbar() {
                 href={l.href}
                 className={cn(
                   "text-sm font-medium transition hover:text-blaze",
+                  tapNav,
                   isActive ? "text-blaze font-semibold" : "text-ink/70"
                 )}
               >
@@ -122,13 +123,16 @@ export function Navbar() {
             <div className="flex items-center gap-2">
               <Link
                 href="/auth/login"
-                className="px-3.5 py-2 text-sm font-medium text-ink/80 hover:text-ink transition"
+                className={cn("px-3.5 py-2 text-sm font-medium text-ink/80 hover:text-ink transition", tapNav)}
               >
                 Sign in
               </Link>
               <Link
                 href="/auth/register"
-                className="rounded-lg bg-blaze px-4 py-2 text-sm font-semibold text-white hover:bg-blaze/90 shadow-xs transition"
+                className={cn(
+                  "rounded-lg bg-blaze px-4 py-2 text-sm font-semibold text-white hover:bg-blaze/90 shadow-xs transition",
+                  tapPress
+                )}
               >
                 Get started
               </Link>
@@ -140,7 +144,7 @@ export function Navbar() {
           <ThemeToggle />
           <button
             type="button"
-            className="p-2 text-ink hover:text-blaze"
+            className={cn("p-2 text-ink hover:text-blaze", tapSoft)}
             aria-label="Toggle menu"
             onClick={() => setOpen((v) => !v)}
           >
@@ -157,7 +161,7 @@ export function Navbar() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="py-1 text-base font-medium hover:text-blaze"
+                className={cn("py-1 text-base font-medium hover:text-blaze", tapNav)}
               >
                 {l.label}
               </Link>
@@ -175,7 +179,7 @@ export function Navbar() {
                 <Link
                   href={dashboardPath(user.role)}
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-2 py-1.5 font-medium text-blaze"
+                  className={cn("flex items-center gap-2 py-1.5 font-medium text-blaze", tapNav)}
                 >
                   <LayoutDashboard className="h-4 w-4" />
                   Dashboard
@@ -186,7 +190,10 @@ export function Navbar() {
                     setOpen(false);
                     logout();
                   }}
-                  className="flex items-center gap-2 text-left text-red-600 dark:text-red-400 py-1.5 font-medium"
+                  className={cn(
+                    "flex items-center gap-2 text-left text-red-600 dark:text-red-400 py-1.5 font-medium",
+                    tapSoft
+                  )}
                 >
                   <LogOut className="h-4 w-4" />
                   Sign out
@@ -197,14 +204,14 @@ export function Navbar() {
                 <Link
                   href="/auth/login"
                   onClick={() => setOpen(false)}
-                  className="w-full text-center rounded-lg border border-line py-2 font-medium"
+                  className={cn("w-full text-center rounded-lg border border-line py-2 font-medium", tapPress)}
                 >
                   Sign in
                 </Link>
                 <Link
                   href="/auth/register"
                   onClick={() => setOpen(false)}
-                  className="w-full text-center rounded-lg bg-blaze py-2 font-semibold text-white"
+                  className={cn("w-full text-center rounded-lg bg-blaze py-2 font-semibold text-white", tapPress)}
                 >
                   Get started
                 </Link>

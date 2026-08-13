@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { cn, tapPress } from "@/lib/utils";
 
 export default function AboutPage() {
   return (
@@ -77,13 +78,19 @@ export default function AboutPage() {
         <div className="flex justify-center gap-4">
           <Link
             href="/gear"
-            className="rounded-xl bg-blaze px-6 py-3 text-sm font-semibold text-white hover:bg-blaze/90 shadow-xs"
+            className={cn(
+              "rounded-xl bg-blaze px-6 py-3 text-sm font-semibold text-white hover:bg-blaze/90 shadow-xs",
+              tapPress
+            )}
           >
             Browse Catalog
           </Link>
           <Link
             href="/auth/register"
-            className="rounded-xl border border-line bg-panel px-6 py-3 text-sm font-semibold text-ink hover:bg-moss/5"
+            className={cn(
+              "rounded-xl border border-line bg-panel px-6 py-3 text-sm font-semibold text-ink hover:bg-moss/5",
+              tapPress
+            )}
           >
             Join as Provider
           </Link>

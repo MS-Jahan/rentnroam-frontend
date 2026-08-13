@@ -3,7 +3,7 @@
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useThemeStore } from "@/store/theme";
-import { cn } from "@/lib/utils";
+import { cn, tapPress } from "@/lib/utils";
 
 export function ThemeToggle({ className }: { className?: string }) {
   const theme = useThemeStore((s) => s.theme);
@@ -23,7 +23,8 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       title={isDark ? "Light mode" : "Dark mode"}
       className={cn(
-        "inline-flex h-9 w-9 items-center justify-center rounded-md border border-line bg-snow text-ink transition hover:bg-moss/10",
+        "inline-flex h-9 w-9 items-center justify-center rounded-md border border-line bg-snow text-ink hover:bg-moss/10",
+        tapPress,
         className
       )}
     >

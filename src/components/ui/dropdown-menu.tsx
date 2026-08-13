@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { cn, tapSoft } from "@/lib/utils";
 
 interface DropdownMenuContextValue {
   open: boolean;
@@ -45,7 +45,7 @@ export function DropdownMenuTrigger({
     <button
       type="button"
       onClick={() => ctx?.setOpen((prev) => !prev)}
-      className={cn("inline-flex items-center justify-center focus:outline-none", className)}
+      className={cn("inline-flex items-center justify-center focus:outline-none", tapSoft, className)}
       {...props}
     >
       {children}
@@ -103,6 +103,7 @@ export function DropdownMenuItem({
       onClick={handleClick}
       className={cn(
         "relative flex cursor-pointer select-none items-center rounded-lg px-3 py-2 text-sm font-medium text-ink/90 outline-none transition-colors hover:bg-moss/10 dark:hover:bg-snow/10 focus:bg-moss/10 disabled:pointer-events-none disabled:opacity-50 gap-2",
+        tapSoft,
         className
       )}
       {...props}

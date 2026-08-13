@@ -6,6 +6,7 @@ import { HomeHero } from "@/components/home/home-hero";
 import { HomeSections } from "@/components/home/home-sections";
 import { HomeNewsletter } from "@/components/home-newsletter";
 import { Badge } from "@/components/ui/badge";
+import { cn, tapPress } from "@/lib/utils";
 
 export default async function HomePage() {
   let featured: GearItem[] = [];
@@ -101,7 +102,10 @@ export default async function HomePage() {
             <div className="pt-4">
               <Link
                 href="/auth/register"
-                className="inline-flex items-center gap-2 rounded-xl bg-blaze px-6 py-3 text-sm font-bold uppercase tracking-wider text-white shadow-md transition hover:bg-blaze/90"
+                className={cn(
+                  "inline-flex items-center gap-2 rounded-xl bg-blaze px-6 py-3 text-sm font-bold uppercase tracking-wider text-white shadow-md transition hover:bg-blaze/90",
+                  tapPress
+                )}
               >
                 <span>Create Provider Account</span>
                 <ArrowRight className="h-4 w-4" />

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cn, tapPress } from "@/lib/utils";
 
 export default function NotFound() {
   return (
@@ -7,7 +8,7 @@ export default function NotFound() {
       <p className="mt-3 text-ink/60">That trail doesn’t exist.</p>
       <Link
         href="/"
-        className="mt-6 rounded-md bg-blaze px-4 py-2 text-sm font-semibold text-white"
+        className={cn("mt-6 rounded-md bg-blaze px-4 py-2 text-sm font-semibold text-white", tapPress)}
       >
         Back home
       </Link>

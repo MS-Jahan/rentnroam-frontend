@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Mail, Phone, MapPin, Globe, Code2, ShieldCheck } from "lucide-react";
+import { cn, tapNav, tapPress } from "@/lib/utils";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 const apiDocsUrl =
@@ -14,7 +15,7 @@ export function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Column 1: Brand & Blurb */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2 font-display text-2xl uppercase tracking-wide text-white">
+            <Link href="/" className={cn("flex items-center gap-2 font-display text-2xl uppercase tracking-wide text-white", tapNav)}>
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blaze text-white font-bold text-lg">
                 R
               </span>
@@ -28,7 +29,7 @@ export function Footer() {
                 href="https://github.com/MS-Jahan/rentnroam-frontend"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-blaze transition"
+                className={cn("hover:text-blaze transition", tapNav)}
                 aria-label="Frontend repository (GitHub)"
               >
                 <Code2 className="h-5 w-5" />
@@ -37,7 +38,7 @@ export function Footer() {
                 href="https://github.com/MS-Jahan/rentnroam-api"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-blaze transition"
+                className={cn("hover:text-blaze transition", tapNav)}
                 aria-label="Backend repository (GitHub)"
               >
                 <Code2 className="h-5 w-5" />
@@ -47,7 +48,7 @@ export function Footer() {
                   href={siteUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:text-blaze transition"
+                  className={cn("hover:text-blaze transition", tapNav)}
                   aria-label="Live website"
                 >
                   <Globe className="h-5 w-5" />
@@ -61,27 +62,27 @@ export function Footer() {
             <h4 className="text-sm font-semibold uppercase tracking-wider text-white">Explore Catalog</h4>
             <ul className="space-y-2 text-sm text-footer-text/70">
               <li>
-                <Link href="/gear" className="hover:text-blaze transition">
+                <Link href="/gear" className={cn("hover:text-blaze transition", tapNav)}>
                   Browse All Gear
                 </Link>
               </li>
               <li>
-                <Link href="/gear?category=camping" className="hover:text-blaze transition">
+                <Link href="/gear?category=camping" className={cn("hover:text-blaze transition", tapNav)}>
                   Camping & Outdoors
                 </Link>
               </li>
               <li>
-                <Link href="/gear?category=cycling" className="hover:text-blaze transition">
+                <Link href="/gear?category=cycling" className={cn("hover:text-blaze transition", tapNav)}>
                   Mountain Bikes
                 </Link>
               </li>
               <li>
-                <Link href="/gear?category=water-sports" className="hover:text-blaze transition">
+                <Link href="/gear?category=water-sports" className={cn("hover:text-blaze transition", tapNav)}>
                   Water Sports & Kayaks
                 </Link>
               </li>
               <li>
-                <Link href="/gear?category=climbing" className="hover:text-blaze transition">
+                <Link href="/gear?category=climbing" className={cn("hover:text-blaze transition", tapNav)}>
                   Climbing Kits
                 </Link>
               </li>
@@ -93,27 +94,27 @@ export function Footer() {
             <h4 className="text-sm font-semibold uppercase tracking-wider text-white">Company</h4>
             <ul className="space-y-2 text-sm text-footer-text/70">
               <li>
-                <Link href="/about" className="hover:text-blaze transition">
+                <Link href="/about" className={cn("hover:text-blaze transition", tapNav)}>
                   About RentNRoam
                 </Link>
               </li>
               <li>
-                <Link href="/help" className="hover:text-blaze transition">
+                <Link href="/help" className={cn("hover:text-blaze transition", tapNav)}>
                   Help & FAQ
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-blaze transition">
+                <Link href="/contact" className={cn("hover:text-blaze transition", tapNav)}>
                   Contact Support
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="hover:text-blaze transition">
+                <Link href="/privacy" className={cn("hover:text-blaze transition", tapNav)}>
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="hover:text-blaze transition">
+                <Link href="/terms" className={cn("hover:text-blaze transition", tapNav)}>
                   Terms of Rental
                 </Link>
               </li>
@@ -141,7 +142,10 @@ export function Footer() {
                   href={apiDocsUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-footer-text/20 px-3 py-1.5 text-xs font-semibold text-white hover:border-blaze hover:text-blaze transition"
+                  className={cn(
+                    "inline-flex items-center gap-1.5 rounded-lg border border-footer-text/20 px-3 py-1.5 text-xs font-semibold text-white hover:border-blaze hover:text-blaze transition",
+                    tapPress
+                  )}
                 >
                   <ShieldCheck className="h-3.5 w-3.5" />
                   <span>Swagger API Docs</span>
@@ -154,8 +158,8 @@ export function Footer() {
         <div className="mt-12 pt-6 border-t border-footer-text/10 flex flex-col sm:flex-row items-center justify-between text-xs text-footer-text/50 gap-4">
           <p>© {new Date().getFullYear()} RentNRoam Rental Marketplace. All rights reserved.</p>
           <div className="flex gap-4">
-            <Link href="/privacy" className="hover:text-footer-text/80">Privacy</Link>
-            <Link href="/terms" className="hover:text-footer-text/80">Terms</Link>
+            <Link href="/privacy" className={cn("hover:text-footer-text/80", tapNav)}>Privacy</Link>
+            <Link href="/terms" className={cn("hover:text-footer-text/80", tapNav)}>Terms</Link>
           </div>
         </div>
       </div>

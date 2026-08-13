@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuthStore } from "@/store/auth";
 import type { AuthPayload } from "@/lib/types";
 import { startOAuth } from "@/lib/oauth";
-import { dashboardPath, formatApiErrorMessage } from "@/lib/utils";
+import { dashboardPath, formatApiErrorMessage, cn, tapPress, tapNav } from "@/lib/utils";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -112,7 +112,10 @@ function LoginForm() {
           <button
             type="button"
             onClick={() => handleDemoLogin("customer@gearup.com", "Customer@123", "Customer")}
-            className="flex flex-col items-center justify-center p-2.5 rounded-xl border border-line bg-panel text-xs font-semibold text-ink hover:border-blaze hover:text-blaze transition shadow-2xs"
+            className={cn(
+              "flex flex-col items-center justify-center p-2.5 rounded-xl border border-line bg-panel text-xs font-semibold text-ink hover:border-blaze hover:text-blaze transition shadow-2xs",
+              tapPress
+            )}
           >
             <UserCheck className="h-4 w-4 mb-1 text-blaze" />
             <span>Customer</span>
@@ -120,7 +123,10 @@ function LoginForm() {
           <button
             type="button"
             onClick={() => handleDemoLogin("provider@gearup.com", "Provider@123", "Provider")}
-            className="flex flex-col items-center justify-center p-2.5 rounded-xl border border-line bg-panel text-xs font-semibold text-ink hover:border-moss hover:text-moss transition shadow-2xs"
+            className={cn(
+              "flex flex-col items-center justify-center p-2.5 rounded-xl border border-line bg-panel text-xs font-semibold text-ink hover:border-moss hover:text-moss transition shadow-2xs",
+              tapPress
+            )}
           >
             <KeyRound className="h-4 w-4 mb-1 text-moss dark:text-fern" />
             <span>Provider</span>
@@ -128,7 +134,10 @@ function LoginForm() {
           <button
             type="button"
             onClick={() => handleDemoLogin("admin@gearup.com", "Admin@12345", "Admin")}
-            className="flex flex-col items-center justify-center p-2.5 rounded-xl border border-line bg-panel text-xs font-semibold text-ink hover:border-purple-500 hover:text-purple-600 transition shadow-2xs"
+            className={cn(
+              "flex flex-col items-center justify-center p-2.5 rounded-xl border border-line bg-panel text-xs font-semibold text-ink hover:border-purple-500 hover:text-purple-600 transition shadow-2xs",
+              tapPress
+            )}
           >
             <Shield className="h-4 w-4 mb-1 text-purple-600" />
             <span>Admin</span>
@@ -188,7 +197,10 @@ function LoginForm() {
             <button
               type="button"
               onClick={() => startOAuth("google", { next })}
-              className="flex items-center justify-center gap-2 rounded-xl border border-line bg-snow py-2.5 text-xs font-medium text-ink hover:bg-moss/5 transition"
+              className={cn(
+                "flex items-center justify-center gap-2 rounded-xl border border-line bg-snow py-2.5 text-xs font-medium text-ink hover:bg-moss/5 transition",
+                tapPress
+              )}
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24">
                 <path
@@ -213,7 +225,10 @@ function LoginForm() {
             <button
               type="button"
               onClick={() => startOAuth("facebook", { next })}
-              className="flex items-center justify-center gap-2 rounded-xl border border-line bg-snow py-2.5 text-xs font-medium text-ink hover:bg-moss/5 transition"
+              className={cn(
+                "flex items-center justify-center gap-2 rounded-xl border border-line bg-snow py-2.5 text-xs font-medium text-ink hover:bg-moss/5 transition",
+                tapPress
+              )}
             >
               <svg className="h-4 w-4 fill-[#1877F2]" viewBox="0 0 24 24">
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -226,7 +241,7 @@ function LoginForm() {
 
       <p className="text-center text-sm text-muted">
         New to RentNRoam?{" "}
-        <Link href="/auth/register" className="font-semibold text-blaze hover:underline">
+        <Link href="/auth/register" className={cn("font-semibold text-blaze hover:underline", tapNav)}>
           Create an account
         </Link>
       </p>

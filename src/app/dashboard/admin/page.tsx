@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { apiClient, fetchCategoryItems } from "@/lib/api";
 import type { GearItem, Paginated, RentalOrder, User as UserType, AdminAnalytics, Category } from "@/lib/types";
-import { formatMoney } from "@/lib/utils";
+import { formatMoney, cn, tapSoft } from "@/lib/utils";
 import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
 import { Input, Select, Label } from "@/components/ui/field";
@@ -458,7 +458,7 @@ function AdminDashboardInner() {
               >
                 <div className="flex items-center justify-between border-b border-line pb-3">
                   <h3 className="font-semibold text-lg text-ink">Add New Category</h3>
-                  <button type="button" onClick={() => setShowAddCat(false)} className="text-muted hover:text-ink">
+                  <button type="button" onClick={() => setShowAddCat(false)} className={cn("text-muted hover:text-ink", tapSoft)}>
                     <X className="h-5 w-5" />
                   </button>
                 </div>

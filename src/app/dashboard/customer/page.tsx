@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { apiClient, ApiError } from "@/lib/api";
 import type { Paginated, Payment, RentalOrder, Review } from "@/lib/types";
-import { formatMoney } from "@/lib/utils";
+import { formatMoney, cn, tapNav, tapPress, tapSoft } from "@/lib/utils";
 import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
 import { Label, Textarea } from "@/components/ui/field";
@@ -167,7 +167,10 @@ function CustomerDashboardInner() {
         </div>
         <Link
           href="/gear"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-blaze px-5 py-2.5 text-xs font-semibold text-white hover:bg-blaze/90 shadow-xs shrink-0"
+          className={cn(
+            "inline-flex items-center justify-center gap-2 rounded-xl bg-blaze px-5 py-2.5 text-xs font-semibold text-white hover:bg-blaze/90 shadow-xs shrink-0",
+            tapPress
+          )}
         >
           <ShoppingBag className="h-4 w-4" />
           <span>Browse Gear Catalog</span>
@@ -234,7 +237,7 @@ function CustomerDashboardInner() {
               <button
                 type="button"
                 onClick={() => handleTabChange("rentals")}
-                className="text-xs font-semibold text-blaze hover:underline"
+                className={cn("text-xs font-semibold text-blaze hover:underline", tapNav)}
               >
                 View all orders →
               </button>
@@ -245,7 +248,7 @@ function CustomerDashboardInner() {
             ) : !orders.data?.items.length ? (
               <div className="p-8 text-center border border-dashed border-line rounded-xl text-muted text-sm space-y-2">
                 <p>No rental orders placed yet.</p>
-                <Link href="/gear" className="inline-block text-xs font-semibold text-blaze">
+                <Link href="/gear" className={cn("inline-block text-xs font-semibold text-blaze", tapNav)}>
                   Start browsing sports equipment
                 </Link>
               </div>
@@ -508,7 +511,7 @@ function CustomerDashboardInner() {
           >
             <div className="flex items-center justify-between border-b border-line pb-3">
               <h3 className="font-semibold text-lg text-ink">Write a Review</h3>
-              <button type="button" onClick={() => setReviewOrder(null)} className="text-muted hover:text-ink">
+              <button type="button" onClick={() => setReviewOrder(null)} className={cn("text-muted hover:text-ink", tapSoft)}>
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -525,7 +528,7 @@ function CustomerDashboardInner() {
                     key={star}
                     type="button"
                     onClick={() => setRating(star)}
-                    className="p-1 text-amber-500 transition hover:scale-110"
+                    className={cn("p-1 text-amber-500 transition hover:scale-110", tapSoft)}
                   >
                     <Star className={`h-6 w-6 ${star <= rating ? "fill-amber-500" : "text-muted"}`} />
                   </button>

@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuthStore } from "@/store/auth";
 import type { AuthPayload } from "@/lib/types";
 import { startOAuth } from "@/lib/oauth";
-import { dashboardPath, formatApiErrorMessage } from "@/lib/utils";
+import { dashboardPath, formatApiErrorMessage, cn, tapPress, tapNav } from "@/lib/utils";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Full name must be at least 2 characters"),
@@ -102,11 +102,14 @@ export default function RegisterPage() {
         <button
           type="button"
           onClick={() => setValue("role", "CUSTOMER")}
-          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition text-center ${
-            selectedRole === "CUSTOMER"
-              ? "border-blaze bg-blaze/10 text-blaze font-semibold shadow-xs"
-              : "border-line bg-panel text-muted hover:text-ink"
-          }`}
+          className={cn(
+            `flex flex-col items-center justify-center p-4 rounded-2xl border transition text-center ${
+              selectedRole === "CUSTOMER"
+                ? "border-blaze bg-blaze/10 text-blaze font-semibold shadow-xs"
+                : "border-line bg-panel text-muted hover:text-ink"
+            }`,
+            tapPress
+          )}
         >
           <UserCheck className="h-5 w-5 mb-1.5" />
           <span className="text-sm">I Want to Rent</span>
@@ -116,11 +119,14 @@ export default function RegisterPage() {
         <button
           type="button"
           onClick={() => setValue("role", "PROVIDER")}
-          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition text-center ${
-            selectedRole === "PROVIDER"
-              ? "border-moss bg-moss/10 text-moss dark:text-fern font-semibold shadow-xs"
-              : "border-line bg-panel text-muted hover:text-ink"
-          }`}
+          className={cn(
+            `flex flex-col items-center justify-center p-4 rounded-2xl border transition text-center ${
+              selectedRole === "PROVIDER"
+                ? "border-moss bg-moss/10 text-moss dark:text-fern font-semibold shadow-xs"
+                : "border-line bg-panel text-muted hover:text-ink"
+            }`,
+            tapPress
+          )}
         >
           <Store className="h-5 w-5 mb-1.5" />
           <span className="text-sm">I Want to List</span>
@@ -211,7 +217,10 @@ export default function RegisterPage() {
             <button
               type="button"
               onClick={() => startOAuth("google", { role: selectedRole })}
-              className="flex items-center justify-center gap-2 rounded-xl border border-line bg-snow py-2.5 text-xs font-medium text-ink hover:bg-moss/5 transition"
+              className={cn(
+                "flex items-center justify-center gap-2 rounded-xl border border-line bg-snow py-2.5 text-xs font-medium text-ink hover:bg-moss/5 transition",
+                tapPress
+              )}
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24">
                 <path
@@ -236,7 +245,10 @@ export default function RegisterPage() {
             <button
               type="button"
               onClick={() => startOAuth("facebook", { role: selectedRole })}
-              className="flex items-center justify-center gap-2 rounded-xl border border-line bg-snow py-2.5 text-xs font-medium text-ink hover:bg-moss/5 transition"
+              className={cn(
+                "flex items-center justify-center gap-2 rounded-xl border border-line bg-snow py-2.5 text-xs font-medium text-ink hover:bg-moss/5 transition",
+                tapPress
+              )}
             >
               <svg className="h-4 w-4 fill-[#1877F2]" viewBox="0 0 24 24">
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -249,7 +261,7 @@ export default function RegisterPage() {
 
       <p className="text-center text-sm text-muted">
         Already have an account?{" "}
-        <Link href="/auth/login" className="font-semibold text-blaze hover:underline">
+        <Link href="/auth/login" className={cn("font-semibold text-blaze hover:underline", tapNav)}>
           Sign in
         </Link>
       </p>

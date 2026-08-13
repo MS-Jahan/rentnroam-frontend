@@ -18,7 +18,7 @@ import { GearCard } from "@/components/gear-card";
 import { AnimatedSection } from "@/components/home/animated-section";
 import { HomeFaq } from "@/components/home-faq";
 import { PremiumSparkles } from "@/components/home/premium-sparkles";
-import { cn } from "@/lib/utils";
+import { cn, tapExpand, tapNav, tapPress } from "@/lib/utils";
 
 const categoryIcons: Record<string, string> = {
   camping: "⛺",
@@ -145,7 +145,7 @@ export function HomeSections({
         <div className="mb-8 flex justify-end">
           <Link
             href="/gear"
-            className="inline-flex items-center gap-1.5 text-sm font-bold text-blaze hover:underline"
+            className={cn("inline-flex items-center gap-1.5 text-sm font-bold text-blaze hover:underline", tapNav)}
           >
             <span>Explore full catalog</span>
             <ArrowRight className="h-4 w-4" />
@@ -159,7 +159,7 @@ export function HomeSections({
             </p>
             <Link
               href="/gear"
-              className="inline-block text-sm font-semibold text-blaze"
+              className={cn("inline-block text-sm font-semibold text-blaze", tapNav)}
             >
               Browse all listings
             </Link>
@@ -200,7 +200,7 @@ export function HomeSections({
                   onClick={() =>
                     setOpenCategory(open ? null : cat.id)
                   }
-                  className="flex w-full items-center gap-4 p-4 text-left sm:p-5"
+                  className={cn("flex w-full items-center gap-4 p-4 text-left sm:p-5", tapExpand)}
                   aria-expanded={open}
                 >
                   <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-line/60 bg-panel/80 text-2xl">
@@ -232,7 +232,10 @@ export function HomeSections({
                     ) : null}
                     <Link
                       href={`/gear?category=${cat.slug}`}
-                      className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-blaze px-4 py-2 text-xs font-bold uppercase tracking-wide text-white transition hover:bg-blaze/90"
+                      className={cn(
+                        "mt-4 inline-flex items-center gap-1.5 rounded-lg bg-blaze px-4 py-2 text-xs font-bold uppercase tracking-wide text-white transition hover:bg-blaze/90",
+                        tapPress
+                      )}
                     >
                       Browse {cat.name}
                       <ArrowRight className="h-3.5 w-3.5" />
@@ -275,7 +278,7 @@ export function HomeSections({
                     <button
                       type="button"
                       onClick={() => setOpenStep(open ? null : idx)}
-                      className="flex w-full items-center gap-4 p-5 text-left"
+                      className={cn("flex w-full items-center gap-4 p-5 text-left", tapExpand)}
                       aria-expanded={open}
                     >
                       <span className="font-display text-3xl font-bold text-blaze">
@@ -356,7 +359,7 @@ export function HomeSections({
                 <button
                   type="button"
                   onClick={() => setOpenBenefit(open ? null : idx)}
-                  className="flex w-full items-start gap-3 p-5 text-left"
+                  className={cn("flex w-full items-start gap-3 p-5 text-left", tapExpand)}
                   aria-expanded={open}
                 >
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blaze/10 text-blaze">
