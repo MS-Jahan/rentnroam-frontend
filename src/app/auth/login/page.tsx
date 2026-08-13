@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -14,6 +14,7 @@ import { FormField } from "@/components/ui/form-field";
 import { Badge } from "@/components/ui/badge";
 import { useAuthStore } from "@/store/auth";
 import type { AuthPayload } from "@/lib/types";
+import { startOAuth } from "@/lib/oauth";
 import { dashboardPath, formatApiErrorMessage } from "@/lib/utils";
 
 const loginSchema = z.object({
@@ -29,6 +30,12 @@ function LoginForm() {
   const setUser = useAuthStore((s) => s.setUser);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("error") === "oauth") {
+      toast.error("Social login failed. Please try again or use email/password.");
+    }
+  }, [searchParams]);
 
   const {
     register,
@@ -80,17 +87,13 @@ function LoginForm() {
     performLogin({ email, password: pass });
   }
 
-  function handleSocialClick(provider: string) {
-    toast.info(
-      `${provider} login is disabled in demo mode. Please use Demo Login buttons or email credentials.`
-    );
-  }
+  const next = searchParams.get("next") ?? undefined;
 
   return (
     <div className="mx-auto max-w-md px-4 py-12 space-y-6">
       <div className="text-center space-y-2">
         <Badge variant="default" className="mx-auto">Account Access</Badge>
-        <h1 className="font-display text-4xl uppercase text-ink">Sign In to GearUp</h1>
+        <h1 className="font-display text-4xl uppercase text-ink">Sign In to RentNRoam</h1>
         <p className="text-sm text-muted">
           Access your rentals, manage equipment, or review analytics.
         </p>
@@ -184,7 +187,7 @@ function LoginForm() {
           <div className="grid grid-cols-2 gap-2">
             <button
               type="button"
-              onClick={() => handleSocialClick("Google")}
+              onClick={() => startOAuth("google", { next })}
               className="flex items-center justify-center gap-2 rounded-xl border border-line bg-snow py-2.5 text-xs font-medium text-ink hover:bg-moss/5 transition"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24">
@@ -209,7 +212,7 @@ function LoginForm() {
             </button>
             <button
               type="button"
-              onClick={() => handleSocialClick("Facebook")}
+              onClick={() => startOAuth("facebook", { next })}
               className="flex items-center justify-center gap-2 rounded-xl border border-line bg-snow py-2.5 text-xs font-medium text-ink hover:bg-moss/5 transition"
             >
               <svg className="h-4 w-4 fill-[#1877F2]" viewBox="0 0 24 24">
@@ -222,7 +225,7 @@ function LoginForm() {
       </form>
 
       <p className="text-center text-sm text-muted">
-        New to GearUp?{" "}
+        New to RentNRoam?{" "}
         <Link href="/auth/register" className="font-semibold text-blaze hover:underline">
           Create an account
         </Link>
