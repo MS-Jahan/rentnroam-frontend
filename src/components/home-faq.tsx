@@ -27,36 +27,55 @@ const faqs = [
   },
 ];
 
+function FaqPanel({ open, children }: { open: boolean; children: React.ReactNode }) {
+  return (
+    <div
+      className={cn(
+        "grid transition-[grid-template-rows] duration-500 ease-out",
+        open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+      )}
+    >
+      <div className="overflow-hidden">
+        <div className="border-t border-line/40 px-5 pb-5 pt-3 text-sm leading-relaxed text-muted">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function HomeFaq() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <div className="space-y-3 max-w-3xl mx-auto">
+    <div className="mx-auto max-w-3xl space-y-3">
       {faqs.map((faq, idx) => {
         const isOpen = openIndex === idx;
         return (
           <div
             key={idx}
-            className="rounded-xl border border-line bg-panel overflow-hidden transition-all shadow-xs"
+            className={cn(
+              "overflow-hidden rounded-xl border shadow-xs transition-all duration-500",
+              isOpen
+                ? "border-blaze/35 bg-panel"
+                : "border-line bg-panel/90 hover:border-blaze/20"
+            )}
           >
             <button
               type="button"
               onClick={() => setOpenIndex(isOpen ? null : idx)}
-              className="flex w-full items-center justify-between p-5 text-left font-semibold text-ink hover:text-blaze transition-colors"
+              className="flex w-full items-center justify-between p-5 text-left font-semibold text-ink transition-colors hover:text-blaze"
+              aria-expanded={isOpen}
             >
               <span>{faq.q}</span>
               <ChevronDown
                 className={cn(
-                  "h-5 w-5 text-muted transition-transform duration-200 shrink-0 ml-2",
+                  "ml-2 h-5 w-5 shrink-0 text-muted transition-transform duration-500",
                   isOpen && "rotate-180 text-blaze"
                 )}
               />
             </button>
-            {isOpen && (
-              <div className="px-5 pb-5 text-sm text-muted leading-relaxed border-t border-line/40 pt-3 animate-in fade-in-50">
-                {faq.a}
-              </div>
-            )}
+            <FaqPanel open={isOpen}>{faq.a}</FaqPanel>
           </div>
         );
       })}

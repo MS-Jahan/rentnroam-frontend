@@ -285,4 +285,10 @@ body {
   body {
     transition: none;
   }
+
+  .transition-all,
+  .transition-\[grid-template-rows\],
+  .transition-\[grid-template-rows\,opacity\] {
+    transition: none !important;
+  }
 }

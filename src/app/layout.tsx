@@ -27,13 +27,14 @@ const themeInitScript = `
 (function () {
   try {
     var raw = localStorage.getItem('rentnroam-theme') || localStorage.getItem('gearup-theme');
-    var theme = 'light';
+    var theme = 'dark';
     if (raw) {
       var parsed = JSON.parse(raw);
       var value = parsed && parsed.state && parsed.state.theme
         ? parsed.state.theme
         : parsed;
-      if (value === 'dark') theme = 'dark';
+      if (value === 'light') theme = 'light';
+      else if (value === 'dark') theme = 'dark';
     }
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');

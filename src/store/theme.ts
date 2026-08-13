@@ -20,7 +20,7 @@ function applyTheme(theme: ThemeMode) {
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set, get) => ({
-      theme: "light",
+      theme: "dark",
       setTheme: (theme) => {
         applyTheme(theme);
         set({ theme });
@@ -32,7 +32,7 @@ export const useThemeStore = create<ThemeState>()(
       },
     }),
     {
-      name: "gearup-theme",
+      name: "rentnroam-theme",
       onRehydrateStorage: () => (state) => {
         if (state?.theme) applyTheme(state.theme);
       },
