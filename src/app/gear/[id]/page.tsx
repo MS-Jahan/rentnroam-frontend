@@ -73,8 +73,9 @@ export default function GearDetailPage() {
         },
       }),
     onSuccess: (order) => {
-      toast.success("Rental order placed successfully!");
-      router.push(`/dashboard/customer?highlight=${order.id}`);
+      sessionStorage.setItem("gearup_pending_checkout", order.id);
+      toast.success("Order placed. You'll pay via Stripe once the provider confirms.");
+      router.push(`/dashboard/customer/orders/${order.id}/pay`);
     },
     onError: (err: Error) => {
       const msg = err instanceof ApiError ? err.message : err.message;
@@ -273,7 +274,7 @@ export default function GearDetailPage() {
           <form onSubmit={onRent} className="rounded-2xl border border-line bg-panel p-6 space-y-4 shadow-sm">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold text-lg text-ink">Reserve Rental</h3>
-              <Badge variant="outline" className="text-[11px]">Instant Confirmation</Badge>
+              <Badge variant="outline" className="text-[11px]">Provider confirms first</Badge>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2">

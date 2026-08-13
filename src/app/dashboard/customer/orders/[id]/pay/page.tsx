@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api";
 import type { RentalOrder } from "@/lib/types";
@@ -10,13 +11,27 @@ import { formatMoney, cn, tapNav } from "@/lib/utils";
 import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
 
+const PENDING_CHECKOUT_KEY = "gearup_pending_checkout";
+
+function isPayable(order: RentalOrder) {
+  return (
+    order.status === "CONFIRMED" &&
+    order.payment?.status !== "COMPLETED"
+  );
+}
+
 export default function PayOrderPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const autoCheckoutAttempted = useRef(false);
 
   const order = useQuery({
     queryKey: ["rental", id],
     queryFn: () => apiClient<RentalOrder>(`/api/rentals/${id}`, { auth: true }),
+    refetchInterval: (query) => {
+      const status = query.state.data?.status;
+      return status === "PLACED" ? 5000 : false;
+    },
   });
 
   const createPayment = useMutation({
@@ -28,10 +43,28 @@ export default function PayOrderPage() {
       }),
     onSuccess: (data) => {
       sessionStorage.setItem("gearup_last_session", data.sessionId);
+      sessionStorage.removeItem(PENDING_CHECKOUT_KEY);
       window.location.href = data.url;
     },
     onError: (e: Error) => toast.error(e.message),
   });
+
+  const { mutate: startCheckout, isPending: checkoutPending } = createPayment;
+
+  const payable = order.data ? isPayable(order.data) : false;
+  const awaitingConfirmation = order.data?.status === "PLACED";
+  const alreadyPaid =
+    order.data?.payment?.status === "COMPLETED" || order.data?.status === "PAID";
+
+  useEffect(() => {
+    if (!order.data || !payable || checkoutPending) return;
+
+    const pendingId = sessionStorage.getItem(PENDING_CHECKOUT_KEY);
+    if (pendingId !== id || autoCheckoutAttempted.current) return;
+
+    autoCheckoutAttempted.current = true;
+    startCheckout();
+  }, [order.data, payable, checkoutPending, id, startCheckout]);
 
   if (order.isLoading) {
     return <div className="mx-auto max-w-lg px-4 py-16 text-ink/50">Loading order…</div>;
@@ -73,19 +106,44 @@ export default function PayOrderPage() {
           <span>Total</span>
           <span>{formatMoney(o.totalAmount)}</span>
         </div>
-        <p className="text-xs text-ink/50">
-          You will open Stripe Checkout next. Use test card 4242 4242 4242 4242
-          with any future expiry and CVC.
-        </p>
-        <Button
-          className="w-full"
-          loading={createPayment.isPending}
-          onClick={() => createPayment.mutate()}
-        >
-          Pay with Stripe
-        </Button>
+
+        {awaitingConfirmation && (
+          <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+            Order placed. Waiting for the provider to confirm availability. Stripe
+            Checkout opens automatically once the order is confirmed.
+          </div>
+        )}
+
+        {alreadyPaid && (
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-900">
+            This order is already paid. Check your dashboard for pickup details.
+          </div>
+        )}
+
+        {payable && (
+          <>
+            <p className="text-xs text-ink/50">
+              You will open Stripe Checkout next. Use test card 4242 4242 4242 4242
+              with any future expiry and CVC.
+            </p>
+            <Button
+              className="w-full"
+              loading={checkoutPending}
+              onClick={() => startCheckout()}
+            >
+              Pay with Stripe
+            </Button>
+          </>
+        )}
+
+        {!payable && !awaitingConfirmation && !alreadyPaid && (
+          <p className="text-xs text-ink/50">
+            Payment is not available for this order in its current status.
+          </p>
+        )}
+
         <Button variant="ghost" className="w-full" onClick={() => router.back()}>
-          Cancel
+          {awaitingConfirmation ? "Back to dashboard" : "Cancel"}
         </Button>
       </div>
     </div>

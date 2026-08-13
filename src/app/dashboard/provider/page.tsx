@@ -101,7 +101,7 @@ function ProviderDashboardInner() {
   // Order Status Mutation
   const updateOrderStatus = useMutation({
     mutationFn: ({ id, status }: { id: string; status: string }) =>
-      apiClient<RentalOrder>(`/api/provider/orders/${id}/status`, {
+      apiClient<RentalOrder>(`/api/provider/orders/${id}`, {
         auth: true,
         method: "PATCH",
         body: { status },
